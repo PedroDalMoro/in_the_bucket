@@ -8,7 +8,7 @@
 
 int main () 
 {
-    Balde balde(100, 100, 40, 80, GREEN);
+    Balde balde(40, 80, GREEN);
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
     SetTargetFPS(60);
