@@ -1,17 +1,26 @@
 #include "bola.hpp"
 
-Bola::Bola(int pos_x, int pos_y, int rad)
+Bola::Bola(int pos_x, int pos_y, int rad, Color cor)
+{
+    init(pos_x, pos_y, rad, cor);
+}
+
+Bola::Bola()
+{
+}
+
+Bola::~Bola()
+{
+}
+
+void Bola::init(int pos_x, int pos_y, int rad, Color cor)
 {
     _pos.x = static_cast<float>(pos_x);
     _pos.y = static_cast<float>(pos_y);
     _vel.x = 10.0f;
     _vel.y = 10.0f;
     _rad = rad;
-    _amort = 0.5;
-}
-
-Bola::~Bola()
-{
+    _cor = cor;
 }
 
 void Bola::update()
@@ -55,6 +64,6 @@ void Bola::draw()
     DrawCircle(static_cast<int>(_pos.x), 
                 static_cast<int>(_pos.y), 
                 _rad, 
-                WHITE);
+                _cor);
 }
 

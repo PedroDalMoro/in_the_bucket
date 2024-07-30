@@ -11,12 +11,14 @@ private:
     Vector2 _pos;
     Vector2 _vel;
     int _rad;
-    float _amort;
+    Color _cor;
 
 public:
-    Bola(int pos_x, int pos_y, int rad);
+    Bola(int pos_x, int pos_y, int rad, Color cor);
+    Bola();
     ~Bola();
 
+    void init(int pos_x, int pos_y, int rad, Color cor);
     void update();
     void draw();
 };
