@@ -1,6 +1,7 @@
 #ifndef BALDE_HPP
 #define BALDE_HPP
 
+#include "defs.hpp"
 #include "raylib.h"
 
 class Balde
