@@ -1,8 +1,23 @@
 #include "bola.hpp"
 
-Bola::Bola(int pos_x, int pos_y, int rad, Color cor)
+int Bola::_map_x(float pos_x)
 {
-    init(pos_x, pos_y, rad, cor);
+    return (static_cast<int>(pos_x * SIM_SCALE));
+}
+
+int Bola::_map_y(float pos_y)
+{
+    return (static_cast<int>(SCREEN_HEIGHT - (pos_y * SIM_SCALE)));
+}
+
+int Bola::_map_rad(float rad)
+{
+    return (static_cast<int>(rad * SIM_SCALE));
+}
+
+Bola::Bola(float pos_x_meters, float pos_y_meters, float rad_meters, Color cor)
+{
+    init(pos_x_meters, pos_y_meters, rad_meters, cor);
 }
 
 Bola::Bola()
@@ -13,47 +28,38 @@ Bola::~Bola()
 {
 }
 
-void Bola::init(int pos_x, int pos_y, int rad, Color cor)
+void Bola::init(float pos_x_meters, float pos_y_meters, float rad_meters, Color cor)
 {
-    _pos.x = static_cast<float>(pos_x);
-    _pos.y = static_cast<float>(pos_y);
-    _vel.x = 10.0f;
-    _vel.y = 10.0f;
-    _rad = rad;
+    _pos.x = pos_x_meters;
+    _pos.y = pos_y_meters;
+    _rad = rad_meters;
     _cor = cor;
+
+    // daria pra isso ser um parametro depois
+    _vel.x = 7.0f;
+    _vel.y = 0.0f;
 }
 
 void Bola::update()
 {
-    // float dt = 1.0f / static_cast<float>(FPS_TARGET);
     float dt = GetFrameTime();
-
-    // std::string coisas;
-    // coisas = std::to_string(dt);
-    // DrawText(coisas.c_str(), 100, 100, 50,  WHITE);
 
     float sdt = dt / 5.0f;
     for (size_t i = 0; i < 5; i++)
     {
-        _vel.y += 150.0f * sdt;
+        _vel.y += -9.81f * sdt;
         _pos.y += _vel.y * sdt;
 
-        _vel.x += 50.0f * sdt;
+        // _vel.x += 50.0f * sdt;
         _pos.x += _vel.x * sdt;
     }
 
-    // _vel.y += 150.0f * dt;
-    // _pos.y += _vel.y * dt;
-
-    // _vel.x += 50.0f * dt;
-    // _pos.x += _vel.x * dt;
-
-    if(_pos.y >= SCREEN_HEIGHT)
+    if(_pos.y <= 0.0f)
     {
         _vel.y *= -1.0f;
     }
 
-    if(_pos.x >= SCREEN_WIDTH || _pos.x <= 0)
+    if(_pos.x >= SIM_WIDTH || _pos.x <= 0)
     {
         _vel.x *= -1.0f;
     }
@@ -61,9 +67,8 @@ void Bola::update()
 
 void Bola::draw()
 {
-    DrawCircle(static_cast<int>(_pos.x), 
-                static_cast<int>(_pos.y), 
-                _rad, 
+    DrawCircle(_map_x(_pos.x), 
+                _map_y(_pos.y), 
+                _map_rad(_rad), 
                 _cor);
 }
-

@@ -10,15 +10,19 @@ class Bola
 private:
     Vector2 _pos;
     Vector2 _vel;
-    int _rad;
+    float _rad;
     Color _cor;
 
+    int _map_x(float pos_x);
+    int _map_y(float pos_y);
+    int _map_rad(float rad);
+
 public:
-    Bola(int pos_x, int pos_y, int rad, Color cor);
+    Bola(float pos_x_meters, float pos_y_meters, float rad_meters, Color cor);
     Bola();
     ~Bola();
 
-    void init(int pos_x, int pos_y, int rad, Color cor);
+    void init(float pos_x_meters, float pos_y_meters, float rad_meters, Color cor);
     void update();
     void draw();
 };
