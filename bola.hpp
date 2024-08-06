@@ -18,11 +18,11 @@ private:
     int _map_rad(float rad);
 
 public:
-    Bola(float pos_x_meters, float pos_y_meters, float rad_meters, Color cor);
+    Bola(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, Color cor);
     Bola();
     ~Bola();
 
-    void init(float pos_x_meters, float pos_y_meters, float rad_meters, Color cor);
+    void init(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, Color cor);
     void update();
     void draw();
 };

@@ -4,30 +4,31 @@
 #include "defs.hpp"
 #include "balde.hpp"
 #include "bola.hpp"
+#include "rng.hpp"
 
-#define N_BOLAS     100             // definitivamente não tem 100 bolinhas na tela atualmente, agora onde tão elas eu não sei. 
+#define N_BOLAS     333
 
 int main () 
 {
-    SetRandomSeed(123);
-
+    RNG random;
     Balde balde(40, 80, GREEN);
-    // Bola bola(10, 5, 0.2, WHITE);
 
     Bola bolas[N_BOLAS];
     for (size_t i = 0; i < N_BOLAS; i++)
     {
-        float x = i * 0.77f;
-        float y = i * 0.55f;
-        float r = i * 0.02f;
+        float x = static_cast<float>(SIM_WIDTH_IN_METERS) * random.getNormalized();
+        float y = SIM_HEIGHT_IN_METERS - (5.0f * random.getNormalized());
+        float r = 0.05f + (0.5f * random.getNormalized());
+        float vx = 5.0f * random.getNormalized();
+        float vy = 5.0f * random.getNormalized();
 
         Color color = {
-            .r = (unsigned char)GetRandomValue(0, 255),
-            .g = (unsigned char)GetRandomValue(0, 255),
-            .b = (unsigned char)GetRandomValue(0, 255),
-            .a = (unsigned char)GetRandomValue(100, 255)
+            .r = (unsigned char)random.getValue(0, 255),
+            .g = (unsigned char)random.getValue(0, 255),
+            .b = (unsigned char)random.getValue(0, 255),
+            .a = (unsigned char)random.getValue(100, 255)
         };
-        bolas[i].init(x, y, r, color);
+        bolas[i].init(x, y, vx, vy, r, color);
     }
     
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
@@ -36,7 +37,7 @@ int main ()
     while (!WindowShouldClose()) 
     {
         BeginDrawing();
-        ClearBackground(DARKBLUE);
+        ClearBackground(DARKBROWN);
 
         int mouse_x = GetMouseX();
         int mouse_y = SCREEN_HEIGHT - 80;
@@ -48,9 +49,7 @@ int main ()
             bolas[i].draw();
         }
 
-        // bola.update();
-        // bola.draw();
-
+        DrawFPS(10, 10);
         EndDrawing();
     }
 
