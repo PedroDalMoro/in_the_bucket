@@ -1,15 +1,17 @@
 #ifndef BOLA_HPP
 #define BOLA_HPP
 
-#include "defs.hpp"
 #include "raylib.h"
 #include <string>
+
+#include "defs.hpp"
+#include "vector_2.hpp"
 
 class Bola
 {
 private:
-    Vector2 _pos;
-    Vector2 _vel;
+    Vec2 _pos;
+    Vec2 _vel;
     float _rad;
     Color _cor;
 
