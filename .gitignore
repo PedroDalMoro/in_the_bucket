@@ -1,3 +1,2 @@
 *.exe
-*.dsym
-main
+.vscode/settings.json
