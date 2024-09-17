@@ -1,2 +1,4 @@
 *.exe
-.vscode/settings.json
+build/
+tests/build/
+tests/catch2/*.o
