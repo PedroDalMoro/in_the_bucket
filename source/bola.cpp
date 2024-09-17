@@ -52,12 +52,12 @@ void Bola::update()
         _pos.x += _vel.x * sdt;
     }
 
-    if(_pos.y <= 0.0f)
+    if((_pos.y - _rad) <= 0.0f)
     {
         _vel.y *= -1.0f;
     }
 
-    if(_pos.x >= SIM_WIDTH || _pos.x <= 0)
+    if((_pos.x + _rad) >= SIM_WIDTH || (_pos.x - _rad) <= 0)
     {
         _vel.x *= -1.0f;
     }
