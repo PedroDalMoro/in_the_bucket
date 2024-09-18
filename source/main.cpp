@@ -6,7 +6,7 @@
 #include "bola.hpp"
 #include "rng.hpp"
 
-#define N_BOLAS     333
+#define N_BOLAS     100
 
 int main () 
 {
