@@ -6,7 +6,7 @@
 #include "bola.hpp"
 #include "rng.hpp"
 
-#define N_BOLAS     2
+#define N_BOLAS     100
 
 int main () 
 {
@@ -28,8 +28,7 @@ int main ()
             .b = (unsigned char)random.getValue(0, 255),
             .a = (unsigned char)random.getValue(100, 255)
         };
-        // bolas[i].init(x, y, vx, vy, r, color);
-        bolas[i].init(x, y, vx, vy, 2, color);
+        bolas[i].init(x, y, vx, vy, r, color);
     }
     
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");

@@ -52,7 +52,8 @@ void Bola::update()
         _pos.x += _vel.x * sdt;
     }
 
-    if((_pos.y - _rad) <= 0.0f)
+    // alterda a comparação pra -1 pra que as bolinhas grudadas fiquem ocultas
+    if((_pos.y - _rad) <= -1.0f)
     {
         _vel.y *= -1.0f;
     }
