@@ -28,14 +28,15 @@ Bola::~Bola()
 {
 }
 
-void Bola::init(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, Color cor)
+void Bola::init(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, Color color)
 {
-    _pos.x = pos_x_meters;
-    _pos.y = pos_y_meters;
-    _vel.x = vel_x_mps;
-    _vel.y = vel_y_mps;
-    _rad = rad_meters;
-    _cor = cor;
+    pos.x = pos_x_meters;
+    pos.y = pos_y_meters;
+    vel.x = vel_x_mps;
+    vel.y = vel_y_mps;
+    rad = rad_meters;
+    mass = rad_meters * rad_meters * PI;       // vi um exemplo com isso, e funciona (mas poderia virar algo mais "real" alguma hora)
+    cor = color;
 }
 
 void Bola::update()
@@ -45,29 +46,30 @@ void Bola::update()
     float sdt = dt / 5.0f;
     for (size_t i = 0; i < 5; i++)
     {
-        _vel.y += -9.81f * sdt;
-        _pos.y += _vel.y * sdt;
+        vel.y += -9.81f * sdt;
+        pos.y += vel.y * sdt;
 
-        // _vel.x += 50.0f * sdt;
-        _pos.x += _vel.x * sdt;
+        // vel.x += 50.0f * sdt;
+        pos.x += vel.x * sdt;
     }
 
     // alterda a comparação pra -1 pra que as bolinhas grudadas fiquem ocultas
-    if((_pos.y - _rad) <= -1.0f)
+    // if((pos.y - rad) <= -1.0f)
+    if((pos.y - rad) <= 0.0f)
     {
-        _vel.y *= -1.0f;
+        vel.y *= -1.0f;
     }
 
-    if((_pos.x + _rad) >= SIM_WIDTH || (_pos.x - _rad) <= 0)
+    if((pos.x + rad) >= SIM_WIDTH || (pos.x - rad) <= 0)
     {
-        _vel.x *= -1.0f;
+        vel.x *= -1.0f;
     }
 }
 
 void Bola::draw()
 {
-    DrawCircle(_map_x(_pos.x), 
-                _map_y(_pos.y), 
-                _map_rad(_rad), 
-                _cor);
+    DrawCircle(_map_x(pos.x), 
+                _map_y(pos.y), 
+                _map_rad(rad), 
+                cor);
 }

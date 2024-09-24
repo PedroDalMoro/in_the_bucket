@@ -33,6 +33,11 @@ Vec2::Vec2(float x, float y)
     _copy(x, y);
 }
 
+Vec2::Vec2(const Vec2& other) : x(other.x), y(other.y)
+{
+    // esse é o construtor de cópia, pra evitar os warnings na hora de criar os objetos com = na frente
+}
+
 Vec2::~Vec2()
 {
 }
@@ -113,4 +118,34 @@ Vec2 Vec2::getNormalized()
 float Vec2::dotProduct(Vec2 other)
 {
     return ((this->x * other.x) + (this->y * other.y));
+}
+
+Vec2 Vec2::getVectorSubtraction(Vec2 left, Vec2 right)
+{
+    Vec2 ret; 
+
+    ret.copy(left);
+    ret.subtract(right);
+
+    return ret; 
+}
+
+Vec2 Vec2::getVectorAddition(Vec2 left, Vec2 right)
+{
+    Vec2 ret; 
+
+    ret.copy(left);
+    ret.add(right);
+
+    return ret; 
+}
+
+Vec2 Vec2::getVectorScaled(Vec2 vector, float scalar)
+{
+    Vec2 ret; 
+
+    ret.copy(vector);
+    ret.scalar(scalar);
+
+    return ret; 
 }

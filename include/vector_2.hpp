@@ -23,6 +23,7 @@ public:
     float y;
 
     Vec2(float x = 0.0f, float y = 0.0f);
+    Vec2(const Vec2& copy);
     ~Vec2();
 
     // operadores pra lidar direto com os vetores
@@ -44,6 +45,11 @@ public:
     float getLength();                              // retorna o tamanho (módulo) do vetor
     Vec2 getNormalized();                           // retorna o vetor normalizado (dividido pelo módulo)
     float dotProduct(Vec2 other);                   // retorna o dot procutd ((vx * ux) + (vy * uy))
+
+    // são declaradas como static pra poder acessar sem o objeto (Vec2::func() por exemplo)
+    static Vec2 getVectorSubtraction(Vec2 left, Vec2 right);
+    static Vec2 getVectorAddition(Vec2 left, Vec2 right);
+    static Vec2 getVectorScaled(Vec2 vector, float scalar);
 };
 
 #endif  // VECTOR_2_HPP
