@@ -1,0 +1,28 @@
+name: Github Actions CI Pipeline
+
+on:
+  # a pipeline vai ser chamada quando for criado um PR pra master
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  # build: verifica se o projeto builda do jeito certo 
+  build:
+    name: build_game
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: make game 
+      run: make game
+
+  # tests: builda os testes e roda eles (o comando "make tests" já roda eles no final sempre)  
+  tests:
+    name: build_and_run_uts
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: make tests
+      run: make tests
