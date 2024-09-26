@@ -20,7 +20,7 @@ DEBUG_FLAGS = -O0 -g
 CXXFLAGS = -Wall -Wextra
 
 # raylib things
-LIBS = -l$(GITHUB_ACTIONS_LIBS_FOLDER)raylib -l$(GITHUB_ACTIONS_LIBS_FOLDER)gdi32 -l$(GITHUB_ACTIONS_LIBS_FOLDER)winmm
+LIBS = -lraylib -lgdi32 -lwinmm
 
 # creating the executable from the object files. the dependencies here are the object files, 
 # and the existence of a build/ folder. 
@@ -34,7 +34,7 @@ run: game
 # creating every object file, from a general make rule.
 # $< means the current target, and $@ means the current dependency.
 $(BUILD_FOLDER)/%.o: $(SOURCE_FOLDER)/%.cpp
-	$(CXX) $(DEBUG_FLAGS) $(CXXFLAGS) -c $< -o $@ -I$(INCLUDE_FOLDER) $(GITHUB_ACTIONS_INCLUDE_FOLDER) $(LIBS)
+	$(CXX) $(DEBUG_FLAGS) $(CXXFLAGS) -c $< -o $@ $(GITHUB_ACTIONS_INCLUDE_FOLDER) -I$(INCLUDE_FOLDER) $(GITHUB_ACTIONS_LIBS_FOLDER) $(LIBS)
 
 # creates the build/ folder, if it doesn't exists already.
 $(BUILD_FOLDER):
