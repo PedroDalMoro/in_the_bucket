@@ -34,7 +34,7 @@ run: game
 # creating every object file, from a general make rule.
 # $< means the current target, and $@ means the current dependency.
 $(BUILD_FOLDER)/%.o: $(SOURCE_FOLDER)/%.cpp
-	$(CXX) $(DEBUG_FLAGS) $(CXXFLAGS) -c $< -o $@ -I$(INCLUDE_FOLDER) $(LIBS)
+	$(CXX) $(DEBUG_FLAGS) $(CXXFLAGS) -c $< -o $@ -I$(INCLUDE_FOLDER) $(GITHUB_ACTIONS_INCLUDE_FOLDER) $(LIBS)
 
 # creates the build/ folder, if it doesn't exists already.
 $(BUILD_FOLDER):

@@ -13,16 +13,54 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: make game 
-      run: make game
+      - uses: actions/checkout@v4
 
-  # tests: builda os testes e roda eles (o comando "make tests" já roda eles no final sempre)  
-  tests:
-    name: build_and_run_uts
-    runs-on: windows-latest
+      # Cache do vcpkg
+      - name: cache_vcpkg
+        id: cache-vcpkg
+        uses: actions/cache@v4
+        with:
+          # NOTE: só consegui fazer isso dar certo fazendo o cache de todo o repo vcpkg
+          # isso comeu 180MB, mas pelo visto o github grátis dá 500MB, então dá pra viver com isso
+          # mas em algum momento no futuro quem sabe seria legal conseguir não usar ele inteiro. 
+          path: ./vcpkg
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: make tests
-      run: make tests
+          # essas são linhas do chatgpt, não sei 100% o que fazem
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+          restore-keys: ${{ runner.os }}-vcpkg-
+
+      - name: setup_vcpkg
+        if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          ./vcpkg/bootstrap-vcpkg.bat
+
+      # Instalando a raylib
+      - name: install_raylib
+        run: |
+          .\vcpkg\vcpkg.exe integrate install
+          .\vcpkg\vcpkg.exe install raylib:x64-windows
+
+      # Executar o make para buildar o projeto
+      # NOTE: passando o -I + a pasta onde o vcpkg guarda o raylib depois de instalar
+      # como variável (só vai existir quando for passada assim, senão é nula dentro do makefile)
+      - name: build_project
+        run: make game GITHUB_ACTIONS_INCLUDE_FOLDER=-I${{ github.workspace }}\vcpkg\installed\x64-windows\include
+
+
+
+
+
+
+
+
+
+  # # tests: builda os testes e roda eles (o comando "make tests" já roda eles no final sempre)  
+  # tests:
+  #   name: build_and_run_uts
+  #   runs-on: windows-latest
+
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: make tests
+  #     run: make tests
