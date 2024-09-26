@@ -20,7 +20,7 @@ DEBUG_FLAGS = -O0 -g
 CXXFLAGS = -Wall -Wextra
 
 # raylib things
-LIBS = -lraylib -lgdi32 -lwinmm
+LIBS = -l$(GITHUB_ACTIONS_LIBS_FOLDER)raylib -l$(GITHUB_ACTIONS_LIBS_FOLDER)gdi32 -l$(GITHUB_ACTIONS_LIBS_FOLDER)winmm
 
 # creating the executable from the object files. the dependencies here are the object files, 
 # and the existence of a build/ folder. 
