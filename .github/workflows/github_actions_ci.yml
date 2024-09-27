@@ -75,4 +75,6 @@ jobs:
           .\vcpkg\vcpkg.exe install raylib:x64-windows
 
       - name: build_project
-        run: make tests GITHUB_ACTIONS_INCLUDE_FOLDER=-I${{ github.workspace }}\vcpkg\installed\x64-windows\include GITHUB_ACTIONS_LIBS_FOLDER=-L${{ github.workspace }}\vcpkg\installed\x64-windows\lib
+        run: | 
+          make tests GITHUB_ACTIONS_INCLUDE_FOLDER=-I${{ github.workspace }}\vcpkg\installed\x64-windows\include GITHUB_ACTIONS_LIBS_FOLDER=-L${{ github.workspace }}\vcpkg\installed\x64-windows\lib
+          .\tests.exe

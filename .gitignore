@@ -1,4 +1,3 @@
 *.exe
 build/
 tests/build/
-tests/catch2/*.o
