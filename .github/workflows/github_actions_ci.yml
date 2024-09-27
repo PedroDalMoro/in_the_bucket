@@ -47,20 +47,32 @@ jobs:
       - name: build_project
         run: make game GITHUB_ACTIONS_INCLUDE_FOLDER=-I${{ github.workspace }}\vcpkg\installed\x64-windows\include GITHUB_ACTIONS_LIBS_FOLDER=-L${{ github.workspace }}\vcpkg\installed\x64-windows\lib
 
+  # tests: builda os testes e roda eles (o comando "make tests" já roda eles no final sempre)  
+  tests:
+    name: build_and_run_tests
+    runs-on: windows-latest
 
+    steps:
+      - uses: actions/checkout@v4
 
+      - name: cache_vcpkg
+        id: cache-vcpkg
+        uses: actions/cache@v4
+        with:
+          path: ./vcpkg
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+          restore-keys: ${{ runner.os }}-vcpkg-
 
+      - name: setup_vcpkg
+        if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          ./vcpkg/bootstrap-vcpkg.bat
 
+      - name: install_raylib
+        run: |
+          .\vcpkg\vcpkg.exe integrate install
+          .\vcpkg\vcpkg.exe install raylib:x64-windows
 
-
-
-
-  # # tests: builda os testes e roda eles (o comando "make tests" já roda eles no final sempre)  
-  # tests:
-  #   name: build_and_run_uts
-  #   runs-on: windows-latest
-
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #   - name: make tests
-  #     run: make tests
+      - name: build_project
+        run: make tests GITHUB_ACTIONS_INCLUDE_FOLDER=-I${{ github.workspace }}\vcpkg\installed\x64-windows\include GITHUB_ACTIONS_LIBS_FOLDER=-L${{ github.workspace }}\vcpkg\installed\x64-windows\lib
