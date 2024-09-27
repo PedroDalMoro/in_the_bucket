@@ -78,7 +78,7 @@ $(TESTS_BUILD_FOLDER)/%.o: $(TESTS_FOLDER)/%.cpp
 
 # create the object file for the catch2 library
 $(CATCH_OBJ_FILE):
-	$(CXX) -c $(CATCH2_FOLDER)/catch_amalgamated.cpp -o $(CATCH_OBJ_FILE) $(GITHUB_ACTIONS_INCLUDE_FOLDER)
+	$(CXX) -c $(CATCH2_FOLDER)/catch_amalgamated.cpp -o $(CATCH_OBJ_FILE)
 
 # creates the build folder for the tests
 $(TESTS_BUILD_FOLDER):
