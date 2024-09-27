@@ -68,7 +68,7 @@ TESTS_OBJS = $(patsubst $(TESTS_FOLDER)/%.cpp, $(TESTS_BUILD_FOLDER)/%.o, $(TEST
 # well as the catch2 object files. The $@ after the compilation executes the tests right after they 
 # are built.
 tests: $(CATCH_OBJ_FILE) $(BUILD_FOLDER) $(OBJS_WITHOUT_MAIN) $(TESTS_BUILD_FOLDER) $(TESTS_OBJS)
-	$(CXX) $(OBJS_WITHOUT_MAIN) $(CATCH_OBJ_FILE) $(TESTS_OBJS) -o $(TESTS_TARGET) $(GITHUB_ACTIONS_LIBS_FOLDER) $(LIBS)
+	$(CXX) $(OBJS_WITHOUT_MAIN) $(CATCH_OBJ_FILE) $(TESTS_OBJS) -o $(TESTS_TARGET) $(GITHUB_ACTIONS_INCLUDE_FOLDER) $(GITHUB_ACTIONS_LIBS_FOLDER) $(LIBS)
 	ls
 	.\$(TESTS_TARGET)
 
