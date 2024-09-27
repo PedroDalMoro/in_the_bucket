@@ -25,7 +25,7 @@ LIBS = -lraylib -lgdi32 -lwinmm
 # creating the executable from the object files. the dependencies here are the object files, 
 # and the existence of a build/ folder. 
 game: $(BUILD_FOLDER) $(OBJS)
-	$(CXX) $(OBJS) -o $(TARGET) $(LIBS)
+	$(CXX) $(OBJS) -o $(TARGET) $(GITHUB_ACTIONS_LIBS_FOLDER) $(LIBS)
 
 # option to build and run the game
 run: game
