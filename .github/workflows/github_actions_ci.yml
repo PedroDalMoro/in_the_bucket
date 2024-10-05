@@ -79,4 +79,3 @@ jobs:
       
       - name: run_tests
         run: .\tests.exe --list-tests
-        continue-on-error: true

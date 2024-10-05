@@ -48,39 +48,49 @@ clean:
 # ***					building the tests					***
 # 
 
-# setup
-TESTS_TARGET = tests.exe
-TESTS_FOLDER = tests
-TESTS_BUILD_FOLDER = $(TESTS_FOLDER)/build
-CATCH2_FOLDER = $(TESTS_FOLDER)/catch2
-CATCH_OBJ_FILE = $(CATCH2_FOLDER)/catch_amalgamated.o
+# # setup
+# TESTS_TARGET = tests.exe
+# TESTS_FOLDER = tests
+# TESTS_BUILD_FOLDER = $(TESTS_FOLDER)/build
+# CATCH2_FOLDER = $(TESTS_FOLDER)/catch2
+# CATCH_OBJ_FILE = $(CATCH2_FOLDER)/catch_amalgamated.o
 
-# in order to build the tests, i can't have main.cpp in the sources (because the catch2 already
-# has it's own main().
-SOURCES_WITHOUT_MAIN = $(filter-out $(SOURCE_FOLDER)/main.cpp, $(SOURCES))
-OBJS_WITHOUT_MAIN = $(patsubst $(SOURCE_FOLDER)/%.cpp, $(BUILD_FOLDER)/%.o, $(SOURCES_WITHOUT_MAIN))
+# # in order to build the tests, i can't have main.cpp in the sources (because the catch2 already
+# # has it's own main().
+# SOURCES_WITHOUT_MAIN = $(filter-out $(SOURCE_FOLDER)/main.cpp, $(SOURCES))
+# OBJS_WITHOUT_MAIN = $(patsubst $(SOURCE_FOLDER)/%.cpp, $(BUILD_FOLDER)/%.o, $(SOURCES_WITHOUT_MAIN))
 
-# just like before, but now i need to compile the test files. 
-TESTS_SOURCES = $(wildcard $(TESTS_FOLDER)/*.cpp)
-TESTS_OBJS = $(patsubst $(TESTS_FOLDER)/%.cpp, $(TESTS_BUILD_FOLDER)/%.o, $(TESTS_SOURCES))
+# # just like before, but now i need to compile the test files. 
+# TESTS_SOURCES = $(wildcard $(TESTS_FOLDER)/*.cpp)
+# TESTS_OBJS = $(patsubst $(TESTS_FOLDER)/%.cpp, $(TESTS_BUILD_FOLDER)/%.o, $(TESTS_SOURCES))
 
-# the prerequisites are all of the object files, both from the project itself and from the tests, as 
-# well as the catch2 object files. The $@ after the compilation executes the tests right after they 
-# are built.
-tests: $(CATCH_OBJ_FILE) $(BUILD_FOLDER) $(OBJS_WITHOUT_MAIN) $(TESTS_BUILD_FOLDER) $(TESTS_OBJS)
-	$(CXX) $(OBJS_WITHOUT_MAIN) $(CATCH_OBJ_FILE) $(TESTS_OBJS) -o $(TESTS_TARGET) $(GITHUB_ACTIONS_LIBS_FOLDER) $(LIBS)
-	ls
+# # the prerequisites are all of the object files, both from the project itself and from the tests, as 
+# # well as the catch2 object files. The $@ after the compilation executes the tests right after they 
+# # are built.
+# tests: $(CATCH_OBJ_FILE) $(BUILD_FOLDER) $(OBJS_WITHOUT_MAIN) $(TESTS_BUILD_FOLDER) $(TESTS_OBJS)
+# 	$(CXX) $(OBJS_WITHOUT_MAIN) $(CATCH_OBJ_FILE) $(TESTS_OBJS) -o $(TESTS_TARGET) $(GITHUB_ACTIONS_LIBS_FOLDER) $(LIBS)
+# 	ls
 
-# .\$(TESTS_TARGET)
+# # .\$(TESTS_TARGET)
 
-# create the object files for the tests
-$(TESTS_BUILD_FOLDER)/%.o: $(TESTS_FOLDER)/%.cpp
-	$(CXX) $(DEBUG_FLAGS) $(CXXFLAGS) -c $< -o $@ $(GITHUB_ACTIONS_INCLUDE_FOLDER) -I$(INCLUDE_FOLDER) -I$(CATCH2_FOLDER) $(GITHUB_ACTIONS_LIBS_FOLDER) $(LIBS)
+# # create the object files for the tests
+# $(TESTS_BUILD_FOLDER)/%.o: $(TESTS_FOLDER)/%.cpp
+# 	$(CXX) $(DEBUG_FLAGS) $(CXXFLAGS) -c $< -o $@ $(GITHUB_ACTIONS_INCLUDE_FOLDER) -I$(INCLUDE_FOLDER) -I$(CATCH2_FOLDER) $(GITHUB_ACTIONS_LIBS_FOLDER) $(LIBS)
 
-# create the object file for the catch2 library
-$(CATCH_OBJ_FILE):
-	$(CXX) -c $(CATCH2_FOLDER)/catch_amalgamated.cpp -o $(CATCH_OBJ_FILE)
+# # create the object file for the catch2 library
+# $(CATCH_OBJ_FILE):
+# 	$(CXX) -c $(CATCH2_FOLDER)/catch_amalgamated.cpp -o $(CATCH_OBJ_FILE)
 
-# creates the build folder for the tests
-$(TESTS_BUILD_FOLDER):
-	mkdir -p $(TESTS_BUILD_FOLDER)
+# # creates the build folder for the tests
+# $(TESTS_BUILD_FOLDER):
+# 	mkdir -p $(TESTS_BUILD_FOLDER)
+
+
+tests: tests/tests_vector_2.o tests/catch2/catch_amalgamated.o
+	g++ tests/tests_vector_2.o tests/catch2/catch_amalgamated.o -o tests
+
+tests/tests_vector_2.o: tests/tests_vector_2.cpp
+	g++ -c tests/tests_vector_2.cpp -o $@ $(GITHUB_ACTIONS_INCLUDE_FOLDER) $(GITHUB_ACTIONS_LIBS_FOLDER)
+
+tests/catch2/catch_amalgamated.o:
+	g++ -c tests/catch2/catch_amalgamated.cpp -o $@
