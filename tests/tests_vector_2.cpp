@@ -10,6 +10,13 @@ TEST_CASE("Testing set vector values")
     // REQUIRE(sut.y == 5.0f);
 
     REQUIRE(1 == 1);
+    REQUIRE(0 == 0);
+}
+
+TEST_CASE("Another test case")
+{
+    REQUIRE(1 == 1);
+    REQUIRE(0 == 0);
 }
 
 // Acho que seria legal começar por essa classe pra criar os testes, 

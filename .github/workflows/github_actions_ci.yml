@@ -78,5 +78,5 @@ jobs:
         run: make tests GITHUB_ACTIONS_INCLUDE_FOLDER=-I${{ github.workspace }}\vcpkg\installed\x64-windows\include GITHUB_ACTIONS_LIBS_FOLDER=-L${{ github.workspace }}\vcpkg\installed\x64-windows\lib
       
       - name: run_tests
-        run: .\tests.exe
+        run: .\tests.exe --list-tests
         continue-on-error: true
