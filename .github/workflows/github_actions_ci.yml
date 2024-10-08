@@ -10,7 +10,7 @@ jobs:
   # build: verifica se o projeto builda do jeito certo 
   build:
     name: build_game
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +50,7 @@ jobs:
   # tests: builda os testes e roda eles (o comando "make tests" já roda eles no final sempre)  
   tests:
     name: build_and_run_tests
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -74,6 +74,9 @@ jobs:
           .\vcpkg\vcpkg.exe integrate install
           .\vcpkg\vcpkg.exe install raylib:x64-windows
           
+      - name: Add Raylib libraries to PATH
+        run: $env:PATH += ";${{ github.workspace }}\vcpkg\installed\x64-windows\bin"
+
       - name: build_and_run_tests
         run: |
           make tests GITHUB_ACTIONS_INCLUDE_FOLDER=-I${{ github.workspace }}\vcpkg\installed\x64-windows\include GITHUB_ACTIONS_LIBS_FOLDER=-L${{ github.workspace }}\vcpkg\installed\x64-windows\lib
