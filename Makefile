@@ -69,6 +69,7 @@ TESTS_OBJS = $(patsubst $(TESTS_FOLDER)/%.cpp, $(TESTS_BUILD_FOLDER)/%.o, $(TEST
 # are built.
 tests: $(CATCH_OBJ_FILE) $(BUILD_FOLDER) $(OBJS_WITHOUT_MAIN) $(TESTS_BUILD_FOLDER) $(TESTS_OBJS)
 	$(CXX) $(OBJS_WITHOUT_MAIN) $(CATCH_OBJ_FILE) $(TESTS_OBJS) -o $(TESTS_TARGET) $(GITHUB_ACTIONS_LIBS_FOLDER) $(LIBS)
+	.\$(TESTS_TARGET)
 
 # create the object files for the tests
 $(TESTS_BUILD_FOLDER)/%.o: $(TESTS_FOLDER)/%.cpp
@@ -81,3 +82,6 @@ $(CATCH_OBJ_FILE):
 # creates the build folder for the tests
 $(TESTS_BUILD_FOLDER):
 	mkdir -p $(TESTS_BUILD_FOLDER)
+
+print:
+	echo $(TESTS_OBJS)
