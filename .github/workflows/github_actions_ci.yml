@@ -10,7 +10,7 @@ jobs:
   # build: verifica se o projeto builda do jeito certo 
   build:
     name: build_game
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +50,7 @@ jobs:
   # tests: builda os testes e roda eles (o comando "make tests" já roda eles no final sempre)  
   tests:
     name: build_and_run_tests
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
