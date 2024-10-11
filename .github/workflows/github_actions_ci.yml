@@ -73,11 +73,6 @@ jobs:
         run: |
           .\vcpkg\vcpkg.exe integrate install
           .\vcpkg\vcpkg.exe install raylib:x64-windows
-          
-      - name: Add Raylib libraries to PATH
-        run: $env:PATH += ";${{ github.workspace }}\vcpkg\installed\x64-windows\bin"
 
       - name: build_and_run_tests
-        run: |
-          make tests GITHUB_ACTIONS_INCLUDE_FOLDER=-I${{ github.workspace }}\vcpkg\installed\x64-windows\include GITHUB_ACTIONS_LIBS_FOLDER=-L${{ github.workspace }}\vcpkg\installed\x64-windows\lib
-          .\tests.exe --list-tests
+        run: make tests GITHUB_ACTIONS_INCLUDE_FOLDER=-I${{ github.workspace }}\vcpkg\installed\x64-windows\include GITHUB_ACTIONS_LIBS_FOLDER=-L${{ github.workspace }}\vcpkg\installed\x64-windows\lib
