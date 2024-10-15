@@ -62,6 +62,14 @@ jobs:
           path: ./vcpkg
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
           restore-keys: ${{ runner.os }}-vcpkg-
+            
+      - name: cache_mingw
+        id: cache-mingw
+        uses: actions/cache@v4
+        with:
+          path: C:\ProgramData\chocolatey\lib\mingw\tools\install
+          key: ${{ runner.os }}-mingw64-${{ hashFiles('mingw.json') }}
+          restore-keys: ${{ runner.os }}-mingw64-
 
       - name: setup_vcpkg
         if: steps.cache-vcpkg.outputs.cache-hit != 'true'
@@ -69,7 +77,8 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git
           ./vcpkg/bootstrap-vcpkg.bat
 
-      - name: install_mingw
+      - name: setup_mingw
+        if: steps.cache-mingw.outputs.cache-hit != 'true'
         run: choco install mingw -y
             
       - name: install_raylib
