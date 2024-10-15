@@ -69,12 +69,8 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git
           ./vcpkg/bootstrap-vcpkg.bat
 
-      - name: Install MinGW
-        run: |
-            choco install mingw -y
-            echo "Add MinGW to PATH"
-            set "PATH=C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw64\bin;%PATH%"
-            echo %PATH%
+      - name: install_mingw
+        run: choco install mingw -y
             
       - name: install_raylib
         run: |
