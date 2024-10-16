@@ -7,7 +7,7 @@ TEST_CASE("Testing set vector values")
 
     sut.set(5, 5);
     REQUIRE(sut.x == 5.0f);
-    REQUIRE(sut.y == 5.0f);     // add erro
+    REQUIRE(sut.y == 5.0f);
 }
 
 // TEST_CASE("Another test case")

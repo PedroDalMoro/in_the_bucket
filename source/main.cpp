@@ -83,8 +83,6 @@ int main ()
         };
         bolas[i].init(x, y, vx, vy, r, color);
     }
-    
-asdfalsdkjfh
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
     SetTargetFPS(FPS_TARGET);
