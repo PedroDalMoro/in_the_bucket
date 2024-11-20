@@ -3,16 +3,15 @@
 # 
 
 # setup
+SOURCE_FOLDER = source
+BUILD_FOLDER = build
+INCLUDE_FOLDER = include
 
 TARGET_WINDOWS = game.exe
 TARGET_LINUX = game
 
 TESTS_TARGET_WINDOWS = unit_tests.exe
 TESTS_TARGET_LINUX = unit_tests
-
-SOURCE_FOLDER = source
-BUILD_FOLDER = build
-INCLUDE_FOLDER = include
 
 # this wildcard avoids some errors due to files not found or something like that
 SOURCES = $(wildcard $(SOURCE_FOLDER)/*.cpp)
@@ -92,6 +91,9 @@ $(CATCH_OBJ_FILE):
 $(TESTS_BUILD_FOLDER):
 	mkdir -p $(TESTS_BUILD_FOLDER)
 
-# clean everything from the build
+# 
+# ***					cleanup					***
+# 
+
 clean:
 	rm -rf $(TARGET_WINDOWS) $(TARGET_LINUX) $(TESTS_TARGET_WINDOWS) $(TESTS_TARGET_LINUX) $(BUILD_FOLDER) $(TESTS_BUILD_FOLDER) $(CATCH_OBJ_FILE)
