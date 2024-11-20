@@ -7,20 +7,28 @@ on:
 
 jobs:
 
-  # build: verifica se o projeto builda do jeito certo 
   build:
     name: build_game
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    
+    container:
+      image: pedrodm22/raylib_static_build:5.5
+      volumes:
+        - ${{ github.workspace }}:/app
 
     steps:
     - uses: actions/checkout@v4
     - name: make game 
       run: make game
 
-  # tests: builda os testes e roda eles (o comando "make tests" já roda eles no final sempre)  
   tests:
-    name: build_and_run_uts
-    runs-on: windows-latest
+    name: build_and_run_unit_tests
+    runs-on: ubuntu-latest
+
+    container:
+      image: pedrodm22/raylib_static_build:5.5
+      volumes:
+        - ${{ github.workspace }}:/app
 
     steps:
     - uses: actions/checkout@v4
