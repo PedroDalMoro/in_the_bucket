@@ -87,6 +87,7 @@ int main ()
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
     SetTargetFPS(FPS_TARGET);
 
+asdf
     while (!WindowShouldClose()) 
     {
         BeginDrawing();
