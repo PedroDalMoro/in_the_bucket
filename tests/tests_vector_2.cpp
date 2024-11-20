@@ -6,7 +6,7 @@ TEST_CASE("Testing set vector values")
     Vec2 sut(0, 0); 
 
     sut.set(5, 5);
-    REQUIRE(sut.x == 5.0f);
+    REQUIRE(sut.x == 7.0f);
     REQUIRE(sut.y == 5.0f);
 }
 
