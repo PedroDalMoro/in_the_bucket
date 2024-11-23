@@ -35,6 +35,7 @@ void Bar::draw(void)
                _map_rad(radius_meters),
                color);
 
+    // por que o raio tem que ser / 2? não entendi isso ainda
     DrawCircleV(_map_point(start_point_meters), _map_rad(radius_meters / 2.0f), color);
     DrawCircleV(_map_point(end_point_meters), _map_rad(radius_meters / 2.0f), color);
 }

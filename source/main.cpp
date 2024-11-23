@@ -2,13 +2,13 @@
 #include <raylib.h>
 
 #include "defs.hpp"
-#include "balde.hpp"
-#include "bola.hpp"
+#include "bucket.hpp"
+#include "ball.hpp"
 #include "bar.hpp"
 #include "rng.hpp"
 #include "physics.hpp"
 
-#define N_BOLAS     4
+#define N_BALLS     4
 
 void print_number(float number_to_print, int x, int y)
 {
@@ -19,10 +19,9 @@ void print_number(float number_to_print, int x, int y)
 int main () 
 {
     RNG random;
-    Balde balde(40, 80, GREEN);
 
-    Bola bolas[N_BOLAS];
-    for (size_t i = 0; i < N_BOLAS; i++)
+    Ball balls[N_BALLS];
+    for (size_t i = 0; i < N_BALLS; i++)
     {
         float x = static_cast<float>(SIM_WIDTH_IN_METERS) * random.getNormalized();
         float y = SIM_HEIGHT_IN_METERS - (5.0f * random.getNormalized());
@@ -36,7 +35,7 @@ int main ()
             .b = (unsigned char)random.getValue(0, 255),
             .a = (unsigned char)random.getValue(100, 255)
         };
-        bolas[i].init(x, y, vx, vy, r, r * r * PI, color);
+        balls[i].init(x, y, vx, vy, r, r * r * PI, color);
     }
 
     Vec2 start(4, 8);
@@ -57,23 +56,22 @@ int main ()
         int mouse_x = GetMouseX();
         int mouse_y = SCREEN_HEIGHT - 80;
 
-        balde.draw(mouse_x, mouse_y);
         bar.draw();
         bar2.draw();
 
-        for (size_t i = 0; i < N_BOLAS; i++)
+        for (size_t i = 0; i < N_BALLS; i++)
         {
-            bolas[i].update();
+            balls[i].update();
 
             // isso pode ser melhorado com hashing pra não ser chamado pra todas as bolinhas
-            for(size_t j = i + 1; j < N_BOLAS; j++)
+            for(size_t j = i + 1; j < N_BALLS; j++)
             {
-                handle_ball_collision(bolas[i], bolas[j], 0.707f);
+                handle_ball_collision(balls[i], balls[j], 0.707f);
             }
 
-            handle_bar_collision(bar, bolas[i]);
-            handle_bar_collision(bar2, bolas[i]);
-            bolas[i].draw();
+            handle_bar_collision(bar, balls[i]);
+            handle_bar_collision(bar2, balls[i]);
+            balls[i].draw();
         }
 
         DrawFPS(10, 10);

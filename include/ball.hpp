@@ -1,5 +1,5 @@
-#ifndef BOLA_HPP
-#define BOLA_HPP
+#ifndef BALL_HPP
+#define BALL_HPP
 
 #include "raylib.h"
 #include <string>
@@ -7,7 +7,7 @@
 #include "defs.hpp"
 #include "vector_2.hpp"
 
-class Bola
+class Ball
 {
 private:
     int _map_x(float pos_x);
@@ -19,15 +19,15 @@ public:
     Vec2 vel;
     float rad;
     float mass;
-    Color cor;
+    Color color;
     
-    Bola(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, float mass, Color cor);
-    Bola();
-    ~Bola();
+    Ball(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, float mass, Color color);
+    Ball();
+    ~Ball();
 
     void init(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, float mass, Color color);
     void update();
     void draw();
 };
 
-#endif  // BOLA_HPP
+#endif  // BALL_HPP

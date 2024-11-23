@@ -1,6 +1,6 @@
 #include "physics.hpp"
 
-void handle_ball_collision(Bola& b1, Bola& b2, float coef_resitution)
+void handle_ball_collision(Ball& b1, Ball& b2, float coef_resitution)
 {
     // verifica se as duas bolas estão colidindo entre si e retorna caso não estejam
     Vec2 direction = Vec2::getVectorSubtraction(b2.pos, b1.pos);
@@ -66,7 +66,7 @@ Vec2 get_closest_point_on_segment(Vec2 point, Vec2 seg_point_a, Vec2 seg_point_b
     return seg_point_a;
 }
 
-void handle_bar_collision(Bar bar, Bola& bola)
+void handle_bar_collision(Bar bar, Ball& bola)
 {
     Vec2 closest_point = get_closest_point_on_segment(bola.pos, 
                                                       bar.start_point_meters, 
@@ -74,7 +74,7 @@ void handle_bar_collision(Bar bar, Bola& bola)
 
     float rad = bar.radius_meters / 2.0f;
 
-    Bola collision_ball(closest_point.x, 
+    Ball collision_ball(closest_point.x, 
                         closest_point.y, 
                         -bola.vel.x, 
                         -bola.vel.y, 
