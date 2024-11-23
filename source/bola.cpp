@@ -15,9 +15,9 @@ int Bola::_map_rad(float rad)
     return (static_cast<int>(rad * SIM_SCALE));
 }
 
-Bola::Bola(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, Color cor)
+Bola::Bola(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, float mass, Color cor)
 {
-    init(pos_x_meters, pos_y_meters, vel_x_mps, vel_y_mps, rad_meters, cor);
+    init(pos_x_meters, pos_y_meters, vel_x_mps, vel_y_mps, rad_meters, mass, cor);
 }
 
 Bola::Bola()
@@ -28,14 +28,14 @@ Bola::~Bola()
 {
 }
 
-void Bola::init(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, Color color)
+void Bola::init(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, float mass, Color color)
 {
     pos.x = pos_x_meters;
     pos.y = pos_y_meters;
     vel.x = vel_x_mps;
     vel.y = vel_y_mps;
     rad = rad_meters;
-    mass = rad_meters * rad_meters * PI;       // vi um exemplo com isso, e funciona (mas poderia virar algo mais "real" alguma hora)
+    this->mass = mass;            // não faço ideia da unidade que isso vale agora
     cor = color;
 }
 
