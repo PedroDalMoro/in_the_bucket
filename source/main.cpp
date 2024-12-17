@@ -2,58 +2,15 @@
 #include <raylib.h>
 
 #include "defs.hpp"
-#include "balde.hpp"
-#include "bola.hpp"
+#include "bucket.hpp"
+#include "ball.hpp"
+#include "bar.hpp"
 #include "rng.hpp"
+#include "physics.hpp"
 
-#define N_BOLAS     30
+#include <math.h>
 
-void handle_ball_collision(Bola& b1, Bola& b2, float coef_resitution)
-{
-    // verifica se as duas bolas estão colidindo entre si e retorna caso não estejam
-    Vec2 direction = Vec2::getVectorSubtraction(b2.pos, b1.pos);
-    float distance = direction.getLength();
-
-    if((distance == 0.0) || (distance > (b1.rad + b2.rad)))
-    {
-        return;
-    }
-
-    // se estão colidindo, calcula qual tem que ser a correção (quanto afastar uma da outra)
-    float correction = (b1.rad + b2.rad - distance) / 2.0f;
-
-    // normaliza a direção pra ser só a direção, e não importar o tamanho
-    direction = direction.getNormalized();
-
-    // calcula as novas posições das bolas, adicionando pro vetor delas o tamanho da 
-    // correção na direção do vetor direction (normalizado antes)
-    Vec2 newpos_b1 = Vec2::getVectorScaled(direction, -correction);
-    b1.pos.add(newpos_b1);
-
-    // NOTE: quando esqueci e deixei o sinal desse correction negativo, funcionava
-    // errado mas de um jeito legal kkkkk pode ser algo do jogo no futuro
-    Vec2 newpos_b2 = Vec2::getVectorScaled(direction, correction);
-    b2.pos.add(newpos_b2);
-
-    // o dot product é basicamente quão parecidos são dois vetores. Se o resultado for 1, são iguais. 
-    // se for -1, são completamente opostos. Então pelo meu entendimento o que tá sendo calculado aqui
-    // é o quão parecidas são a velocidade atual da bola e a direção do impacto entre as duas
-    float v1 = b1.vel.dotProduct(direction);
-    float v2 = b2.vel.dotProduct(direction);
-
-    float m1 = b1.mass;
-    float m2 = b2.mass;
-
-    // calcula as novas velocidades depois da colisão, e aplica elas pras duas bolas
-    float new_v1 = ((m1 * v1) + (m2 * v2) - ( m2 * (v1 - v2) * coef_resitution)) / (m1 + m2);
-    float new_v2 = ((m1 * v1) + (m2 * v2) - ( m1 * (v2 - v1) * coef_resitution)) / (m1 + m2);
-
-    Vec2 newvel_b1 = Vec2::getVectorScaled(direction, new_v1 - v1);
-    b1.vel.add(newvel_b1);
-
-    Vec2 newvel_b2 = Vec2::getVectorScaled(direction, new_v2 - v2);
-    b2.vel.add(newvel_b2);
-}
+#define N_BALLS    1
 
 void print_number(float number_to_print, int x, int y)
 {
@@ -64,10 +21,9 @@ void print_number(float number_to_print, int x, int y)
 int main () 
 {
     RNG random;
-    Balde balde(40, 80, GREEN);
 
-    Bola bolas[N_BOLAS];
-    for (size_t i = 0; i < N_BOLAS; i++)
+    Ball balls[N_BALLS];
+    for (size_t i = 0; i < N_BALLS; i++)
     {
         float x = static_cast<float>(SIM_WIDTH_IN_METERS) * random.getNormalized();
         float y = SIM_HEIGHT_IN_METERS - (5.0f * random.getNormalized());
@@ -81,32 +37,43 @@ int main ()
             .b = (unsigned char)random.getValue(0, 255),
             .a = (unsigned char)random.getValue(100, 255)
         };
-        bolas[i].init(x, y, vx, vy, r, color);
+        balls[i].init(x, y, vx, vy, r, r * r * PI, color);
     }
-    
+
+    float move_x = 5.0f;
+    float move_y = 5.0f;
+    Bucket bucket(Vec2(move_x, move_y), 2.0f, 3.0f, 1.0f, RED);
+
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
-    SetTargetFPS(FPS_TARGET);
+
+    float other_x = 5.0f;
+    float other_y = 5.0f;
 
     while (!WindowShouldClose()) 
     {
         BeginDrawing();
         ClearBackground(DARKGRAY);
 
-        int mouse_x = GetMouseX();
-        int mouse_y = SCREEN_HEIGHT - 80;
-        balde.draw(mouse_x, mouse_y);
+        if (IsKeyDown(KEY_LEFT)) move_x -= 0.003f;    
+        if (IsKeyDown(KEY_RIGHT)) move_x += 0.003f;
+        if (IsKeyDown(KEY_UP)) move_y += 0.003f;
+        if (IsKeyDown(KEY_DOWN)) move_y -= 0.003f;
+        bucket.draw(move_x, move_y);
 
-        for (size_t i = 0; i < N_BOLAS; i++)
+        for (size_t i = 0; i < N_BALLS; i++)
         {
-            bolas[i].update();
+            balls[i].update();
 
             // isso pode ser melhorado com hashing pra não ser chamado pra todas as bolinhas
-            for(size_t j = i + 1; j < N_BOLAS; j++)
+            for(size_t j = i + 1; j < N_BALLS; j++)
             {
-                handle_ball_collision(bolas[i], bolas[j], 0.707f);
+                handle_ball_collision(balls[i], balls[j], 0.707f);
             }
 
-            bolas[i].draw();
+            handle_bar_collision(bucket.bar1, balls[i]);
+            handle_bar_collision(bucket.bar2, balls[i]);
+            handle_bar_collision(bucket.bar3, balls[i]);
+            balls[i].draw();
         }
 
         DrawFPS(10, 10);
@@ -116,3 +83,15 @@ int main ()
     CloseWindow();
     return 0;
 }
+
+/*
+    A situação agora é a seguinte: não quero simplesmente largar isso no meio, mas quero terminar ele logo. 
+    Como foi só eu mesmo que lidei nisso desde o começo, e tenho outras coisas que quero estudar no momento, o plano pra finalizar 
+    o joguinho vai ser:
+    - manter somente as setas pra mexer o balde, porque assim não tem o problema das bolinhas saírem pelo meio dele
+    - arrumar a estrutura desse projeto, porque isso seria algo que eu gostaria de aprender e seria útil
+    - criar uns sliders que podem servir pra montar os níveis (o jogo em si pode ter só um nível main, onde as coisas mudam conforme os sliders e possivelmente
+    um botão de reset)
+    - colocar contador de bolas na tela e também fazer com que as bolas que estão fora saiam do escopo do jogo (aprender a lidar com o new e delete melhor)
+    - tentar implementar os easings no movimento do balde, acho que seria legal e fácil - já não sei até que ponto seria fácil, só legal mesmo
+*/
