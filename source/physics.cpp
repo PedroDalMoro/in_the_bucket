@@ -86,12 +86,23 @@ void handle_bar_collision(Bar bar, Ball& bola)
     handle_ball_collision(collision_ball, bola, 0.707f);
 }
 
-// int map_x(float pos_x)
-// {
-//     return (static_cast<int>(pos_x * SIM_SCALE));
-// }
+float map_pixel_to_meters_x(int pos_x)
+{
+    return (static_cast<float>(pos_x / SIM_SCALE));
+}
 
-// int map_y(float pos_y)
-// {
-//     return (static_cast<int>(SCREEN_HEIGHT - (pos_y * SIM_SCALE)));
-// }
+float map_pixel_to_meters_y(int pos_y)
+{
+    // isso aqui tá meio estranho mas tá funcionando, ver melhor outra hora
+    return ( - static_cast<float>((pos_y - SCREEN_HEIGHT) / SIM_SCALE));
+}
+
+int map_meters_to_pixel_x(float pos_x)
+{
+    return (static_cast<int>(pos_x * SIM_SCALE));
+}
+
+int map_meters_to_pixel_y(float pos_y)
+{
+    return (static_cast<int>(SCREEN_HEIGHT - (pos_y * SIM_SCALE)));
+}
