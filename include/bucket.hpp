@@ -28,15 +28,19 @@ private:
     Vec2 point_bottom_right;
 
 public:
-    Bar bar1;
-    Bar bar2;
-    Bar bar3;
+    Bar bar_left;
+    Bar bar_bottom;
+    Bar bar_right;
     
+    Bucket();
     Bucket(Vec2 pos, float width, float height, float top_bottom_diff, Color color);
     ~Bucket();
 
+    void init(Vec2 pos, float width, float height, float top_bottom_diff, Color color);
+
     void update_bucket_points(float new_x, float new_y);
-    void draw(float mouse_x, float mouse_y);
+    void update(float mouse_x, float mouse_y);
+    void draw();
 };
 
 #endif  // BUCKET_HPP

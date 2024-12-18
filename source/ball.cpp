@@ -1,19 +1,5 @@
 #include "ball.hpp"
-
-int Ball::_map_x(float pos_x)
-{
-    return (static_cast<int>(pos_x * SIM_SCALE));
-}
-
-int Ball::_map_y(float pos_y)
-{
-    return (static_cast<int>(SCREEN_HEIGHT - (pos_y * SIM_SCALE)));
-}
-
-int Ball::_map_rad(float rad)
-{
-    return (static_cast<int>(rad * SIM_SCALE));
-}
+#include "physics.hpp"
 
 Ball::Ball(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, float mass, Color cor)
 {
@@ -35,7 +21,7 @@ void Ball::init(float pos_x_meters, float pos_y_meters, float vel_x_mps, float v
     this->vel.x = vel_x_mps;
     this->vel.y = vel_y_mps;
     this->rad = rad_meters;
-    this->mass = mass;            // não faço ideia da unidade que isso vale agora
+    this->mass = mass;              // NOTE: no idea what is this measurement unit
     this->color = color;
 }
 
@@ -65,8 +51,8 @@ void Ball::update()
 
 void Ball::draw()
 {
-    DrawCircle(_map_x(pos.x), 
-                _map_y(pos.y), 
-                _map_rad(rad), 
+    DrawCircle(map_meters_to_pixel_x(pos.x), 
+                map_meters_to_pixel_y(pos.y), 
+                map_meters_to_pixel_x(rad), 
                 color);
 }

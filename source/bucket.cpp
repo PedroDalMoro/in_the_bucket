@@ -3,17 +3,15 @@
 
 Bucket::Bucket(Vec2 pos, float width, float height, float top_bottom_diff, Color color)
 {
-    this->pos = pos;
-    this->width = width;
-    this->height = height;
-    this->top_bottom_diff = top_bottom_diff;
-    this->color = color;
+    init(pos, width, height, top_bottom_diff, color);
+}
 
-    update_bucket_points(pos.x, pos.y);
+Bucket::Bucket()
+{
+}
 
-    bar1.init(point_top_left, point_bottom_left, 0.15, BLUE);
-    bar2.init(point_bottom_left, point_bottom_right, 0.15, YELLOW);
-    bar3.init(point_bottom_right, point_top_right, 0.15, RED);
+Bucket::~Bucket()
+{
 }
 
 void Bucket::update_bucket_points(float new_x, float new_y)
@@ -30,24 +28,38 @@ void Bucket::update_bucket_points(float new_x, float new_y)
     this->point_top_right.x = new_x + width + (2 * top_bottom_diff);
     this->point_top_right.y = new_y;
 
-    bar1.set_start(point_top_left);
-    bar1.set_end(point_bottom_left);
-    bar2.set_start(point_bottom_left);
-    bar2.set_end(point_bottom_right);
-    bar3.set_start(point_bottom_right);
-    bar3.set_end(point_top_right);
+    bar_left.set_start(point_top_left);
+    bar_left.set_end(point_bottom_left);
+    bar_bottom.set_start(point_bottom_left);
+    bar_bottom.set_end(point_bottom_right);
+    bar_right.set_start(point_bottom_right);
+    bar_right.set_end(point_top_right);
 }
 
-Bucket::~Bucket()
+void Bucket::init(Vec2 pos, float width, float height, float top_bottom_diff, Color color)
 {
+    this->pos = pos;
+    this->width = width;
+    this->height = height;
+    this->top_bottom_diff = top_bottom_diff;
+    this->color = color;
+
+    update_bucket_points(pos.x, pos.y);
+
+    bar_left.init(point_top_left, point_bottom_left, 0.15, BLUE);
+    bar_bottom.init(point_bottom_left, point_bottom_right, 0.15, YELLOW);
+    bar_right.init(point_bottom_right, point_top_right, 0.15, RED);
 }
 
-void Bucket::draw(float mouse_x, float mouse_y)
+void Bucket::update(float mouse_x, float mouse_y)
 {
     update_bucket_points(mouse_x, mouse_y);
+}
 
-    bar1.draw();
-    bar2.draw();
-    bar3.draw();
+void Bucket::draw()
+{
+    bar_left.draw();
+    bar_bottom.draw();
+    bar_right.draw();
 }
 

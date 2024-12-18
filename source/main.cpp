@@ -7,10 +7,9 @@
 #include "bar.hpp"
 #include "rng.hpp"
 #include "physics.hpp"
+#include "level.hpp"
 
-#include <math.h>
-
-#define N_BALLS    1
+#define N_BALLS    10
 
 void print_number(float number_to_print, int x, int y)
 {
@@ -20,61 +19,32 @@ void print_number(float number_to_print, int x, int y)
 
 int main () 
 {
-    RNG random;
+    RNG::init();
+    user_input_t user_input = {5.0f, 5.0f};
 
-    Ball balls[N_BALLS];
-    for (size_t i = 0; i < N_BALLS; i++)
-    {
-        float x = static_cast<float>(SIM_WIDTH_IN_METERS) * random.getNormalized();
-        float y = SIM_HEIGHT_IN_METERS - (5.0f * random.getNormalized());
-        float r = 0.15f + (0.5f * random.getNormalized());
-        float vx = 5.0f * random.getNormalized();
-        float vy = 5.0f * random.getNormalized();
+    level_configs_t level_configs = {
+        .n_balls = N_BALLS,
+        .color_valid = WHITE,
+        .color_invalid = RED,
+        .ball_radius_min = 0.25f,
+        .ball_radius_max = 0.40f
+    };
 
-        Color color = {
-            .r = (unsigned char)random.getValue(0, 255),
-            .g = (unsigned char)random.getValue(0, 255),
-            .b = (unsigned char)random.getValue(0, 255),
-            .a = (unsigned char)random.getValue(100, 255)
-        };
-        balls[i].init(x, y, vx, vy, r, r * r * PI, color);
-    }
-
-    float move_x = 5.0f;
-    float move_y = 5.0f;
-    Bucket bucket(Vec2(move_x, move_y), 2.0f, 3.0f, 1.0f, RED);
+    Level level(level_configs, &user_input);
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
-
-    float other_x = 5.0f;
-    float other_y = 5.0f;
 
     while (!WindowShouldClose()) 
     {
         BeginDrawing();
         ClearBackground(DARKGRAY);
 
-        if (IsKeyDown(KEY_LEFT)) move_x -= 0.003f;    
-        if (IsKeyDown(KEY_RIGHT)) move_x += 0.003f;
-        if (IsKeyDown(KEY_UP)) move_y += 0.003f;
-        if (IsKeyDown(KEY_DOWN)) move_y -= 0.003f;
-        bucket.draw(move_x, move_y);
+        if (IsKeyDown(KEY_LEFT)) user_input.position_on_x_axis -= 0.003f;    
+        if (IsKeyDown(KEY_RIGHT)) user_input.position_on_x_axis += 0.003f;
+        if (IsKeyDown(KEY_UP)) user_input.position_on_y_axis += 0.003f;
+        if (IsKeyDown(KEY_DOWN)) user_input.position_on_y_axis -= 0.003f;
 
-        for (size_t i = 0; i < N_BALLS; i++)
-        {
-            balls[i].update();
-
-            // isso pode ser melhorado com hashing pra não ser chamado pra todas as bolinhas
-            for(size_t j = i + 1; j < N_BALLS; j++)
-            {
-                handle_ball_collision(balls[i], balls[j], 0.707f);
-            }
-
-            handle_bar_collision(bucket.bar1, balls[i]);
-            handle_bar_collision(bucket.bar2, balls[i]);
-            handle_bar_collision(bucket.bar3, balls[i]);
-            balls[i].draw();
-        }
+        level.loop();
 
         DrawFPS(10, 10);
         EndDrawing();

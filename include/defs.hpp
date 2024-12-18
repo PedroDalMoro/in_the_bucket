@@ -12,5 +12,10 @@
 
 #define FPS_TARGET              60
 
+struct user_input_t {
+    float position_on_x_axis;
+    float position_on_y_axis;
+};
+
 
 #endif  // DEFS_HPP

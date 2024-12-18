@@ -12,8 +12,9 @@ private:
 public:
     RNG();
     ~RNG();
-    float getNormalized(void);
-    int getValue(int min, int max);
+    static void init(void);
+    static float getNormalized(void);
+    static int getValue(int min, int max);
 };
 
 #endif  // RNG_HPP

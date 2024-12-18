@@ -2,17 +2,12 @@
 #define BALL_HPP
 
 #include "raylib.h"
-#include <string>
-
 #include "defs.hpp"
 #include "vector_2.hpp"
 
 class Ball
 {
 private:
-    int _map_x(float pos_x);
-    int _map_y(float pos_y);
-    int _map_rad(float rad);
 
 public:
     Vec2 pos;
