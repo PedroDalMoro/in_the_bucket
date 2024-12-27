@@ -1,13 +1,13 @@
 #include "bucket.hpp"
-#include "physics.hpp"
+#include "engine.hpp"
+
+Bucket::Bucket()
+{
+}
 
 Bucket::Bucket(Vec2 pos, float width, float height, float top_bottom_diff, Color color)
 {
     init(pos, width, height, top_bottom_diff, color);
-}
-
-Bucket::Bucket()
-{
 }
 
 Bucket::~Bucket()
@@ -62,4 +62,3 @@ void Bucket::draw()
     bar_bottom.draw();
     bar_right.draw();
 }
-

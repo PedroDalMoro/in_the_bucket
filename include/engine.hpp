@@ -1,5 +1,5 @@
-#ifndef PHYSICS_HPP
-#define PHYSICS_HPP
+#ifndef ENGINE_HPP
+#define ENGINE_HPP
 
 #include "ball.hpp"
 #include "bar.hpp"
@@ -14,4 +14,4 @@ float map_pixel_to_meters_y(int pos_y);
 int map_meters_to_pixel_x(float pos_x);
 int map_meters_to_pixel_y(float pos_y);
 
-#endif // PHYSICS_HPP
+#endif // ENGINE_HPP

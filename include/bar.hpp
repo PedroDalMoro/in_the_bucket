@@ -17,16 +17,13 @@ public:
     float radius_meters;
     Color color;
 
-    Bar(Vec2 start_point_meters, Vec2 end_point_meters, float radius_meters, Color color);
     Bar();
-
+    Bar(Vec2 start_point_meters, Vec2 end_point_meters, float radius_meters, Color color);
     ~Bar();
 
     void init(Vec2 start_point_meters, Vec2 end_point_meters, float radius_meters, Color color);
-
     void set_start(Vec2 start_point_meters);
     void set_end(Vec2 end_point_meters);
-    
     void draw(void);
 };
 

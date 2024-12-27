@@ -17,5 +17,4 @@ struct user_input_t {
     float position_on_y_axis;
 };
 
-
 #endif  // DEFS_HPP

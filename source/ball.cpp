@@ -1,13 +1,13 @@
 #include "ball.hpp"
-#include "physics.hpp"
+#include "engine.hpp"
+
+Ball::Ball()
+{
+}
 
 Ball::Ball(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, float mass, Color cor)
 {
     init(pos_x_meters, pos_y_meters, vel_x_mps, vel_y_mps, rad_meters, mass, cor);
-}
-
-Ball::Ball()
-{
 }
 
 Ball::~Ball()
