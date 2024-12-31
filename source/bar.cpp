@@ -1,4 +1,5 @@
 #include "bar.hpp"
+#include "engine.hpp"
 
 Bar::Bar()
 {
@@ -13,21 +14,6 @@ Bar::Bar(Vec2 start_point_meters, Vec2 end_point_meters, float radius_meters, Co
 Bar::~Bar()
 {
 
-}
-
-Vector2 Bar::_map_point(Vec2 point)
-{
-    Vector2 ret;
-
-    ret.x = static_cast<int>(point.x * SIM_SCALE);
-    ret.y = static_cast<int>(SCREEN_HEIGHT - (point.y * SIM_SCALE));
-
-    return ret;
-}
-
-float Bar::_map_rad(float rad)
-{
-    return (rad * SIM_SCALE);
 }
 
 void Bar::init(Vec2 start_point_meters, Vec2 end_point_meters, float radius_meters, Color color)
@@ -50,12 +36,12 @@ void Bar::set_end(Vec2 end_point_meters)
     
 void Bar::draw(void)
 {
-    DrawLineEx(_map_point(start_point_meters), 
-               _map_point(end_point_meters),
-               _map_rad(radius_meters),
+    DrawLineEx(map_point_to_pixel(start_point_meters), 
+               map_point_to_pixel(end_point_meters),
+               map_radius_to_pixel(radius_meters),
                color);
 
     // por que o raio tem que ser / 2? não entendi isso ainda
-    DrawCircleV(_map_point(start_point_meters), _map_rad(radius_meters / 2.0f), color);
-    DrawCircleV(_map_point(end_point_meters), _map_rad(radius_meters / 2.0f), color);
+    DrawCircleV(map_point_to_pixel(start_point_meters), map_radius_to_pixel(radius_meters / 2.0f), color);
+    DrawCircleV(map_point_to_pixel(end_point_meters), map_radius_to_pixel(radius_meters / 2.0f), color);
 }

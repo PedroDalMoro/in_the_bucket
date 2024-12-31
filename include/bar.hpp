@@ -8,8 +8,6 @@
 class Bar
 {
 private:
-    Vector2 _map_point(Vec2 point);
-    float _map_rad(float rad);
 
 public:
     Vec2 start_point_meters;

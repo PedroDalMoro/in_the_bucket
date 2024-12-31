@@ -14,4 +14,7 @@ float map_pixel_to_meters_y(int pos_y);
 int map_meters_to_pixel_x(float pos_x);
 int map_meters_to_pixel_y(float pos_y);
 
+Vector2 map_point_to_pixel(Vec2 point);
+float map_radius_to_pixel(float rad);
+
 #endif // ENGINE_HPP

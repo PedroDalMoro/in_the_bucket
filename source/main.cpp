@@ -8,6 +8,7 @@
 #include "rng.hpp"
 #include "engine.hpp"
 #include "level.hpp"
+#include "slider.hpp"
 
 #define N_BALLS    10
 
@@ -34,6 +35,10 @@ int main ()
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
 
+    Slider slider(SLIDER_POS_1);
+    Slider slider2(SLIDER_POS_2, false);
+    Slider slider3(SLIDER_POS_3);
+
     while (!WindowShouldClose()) 
     {
         BeginDrawing();
@@ -45,6 +50,13 @@ int main ()
         if (IsKeyDown(KEY_DOWN)) user_input.position_on_y_axis -= 0.003f;
 
         level.loop();
+
+        slider.update();
+        slider.draw();
+        slider2.update();
+        slider2.draw();
+        slider3.update();
+        slider3.draw();
 
         DrawFPS(10, 10);
         EndDrawing();

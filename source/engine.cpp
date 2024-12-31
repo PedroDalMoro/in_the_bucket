@@ -106,3 +106,18 @@ int map_meters_to_pixel_y(float pos_y)
 {
     return (static_cast<int>(SCREEN_HEIGHT - (pos_y * SIM_SCALE)));
 }
+
+Vector2 map_point_to_pixel(Vec2 point)
+{
+    Vector2 ret;
+
+    ret.x = static_cast<int>(point.x * SIM_SCALE);
+    ret.y = static_cast<int>(SCREEN_HEIGHT - (point.y * SIM_SCALE));
+
+    return ret;
+}
+
+float map_radius_to_pixel(float rad)
+{
+    return (rad * SIM_SCALE);
+}
