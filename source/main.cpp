@@ -9,6 +9,9 @@
 #include "engine.hpp"
 #include "level.hpp"
 #include "slider.hpp"
+#include "button.hpp"
+
+#include <iostream>
 
 #define N_BALLS    10
 
@@ -39,6 +42,10 @@ int main ()
     Slider slider2(SLIDER_POS_2, false);
     Slider slider3(SLIDER_POS_3);
 
+    Button button1(Vec2(0.2f, 14.0f), "BTN1", BUTTON_TYPE_LATCH);
+    Button button2(Vec2(0.2f, 12.0f), "BTN2", BUTTON_TYPE_LATCH);
+    Button button3(Vec2(0.2f, 10.0f), "BTN3", BUTTON_TYPE_LATCH);
+
     while (!WindowShouldClose()) 
     {
         BeginDrawing();
@@ -58,6 +65,13 @@ int main ()
         slider3.update();
         slider3.draw();
 
+        button1.update();
+        button1.draw();
+        button2.update();
+        button2.draw();
+        button3.update();
+        button3.draw();
+
         DrawFPS(10, 10);
         EndDrawing();
     }
@@ -69,8 +83,6 @@ int main ()
 /*
     Coisas que faltam, versão simplificada:
     - criar estrutura pra ter mais levels (mais pro final isso)
-    - criar botão
-    - criar sliders
     - criar canhão
     - criar contador de bolas na tela (fazer isso com new e delete afu)
     - tentar implementar velocidade do balde (pra se bater nas bolinhas também)

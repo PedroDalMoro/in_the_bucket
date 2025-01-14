@@ -2,7 +2,6 @@
 #define SLIDER_HPP
 
 #include "vector_2.hpp"
-#include "ball.hpp"
 
 #define SLIDER_LENGTH 4.0f
 #define SLIDER_HEIGHT 0.1f
