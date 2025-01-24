@@ -1,0 +1,10 @@
+# BasedOnStyle: Google
+# IndentWidth: 4
+# ColumnLimit: 200
+# # AllowShortIfStatementsOnASingleLine: true
+# # BreakBeforeBraces: Allman
+# # SpacesInParentheses: false
+# # SpaceAfterCStyleCast: true
+# # SpaceBeforeParens: ControlStatements
+# # SortIncludes: false
+# # AccessModifierOffset: -4

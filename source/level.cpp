@@ -3,6 +3,8 @@
 #include "rng.hpp"
 #include "engine.hpp"
 
+std::vector<Ball> Level::balls;
+
 Level::Level(const level_configs_t level_configs, user_input_t *user_input)
 {
     this->user_input = user_input;
@@ -11,40 +13,51 @@ Level::Level(const level_configs_t level_configs, user_input_t *user_input)
     setup();
 }
 
-Level::~Level()
+Level::~Level() 
 {
-    
+
 }
 
-void Level::setup(void)
-{
-    balls = new Ball[configs.n_balls];
-
-    for (size_t i = 0; i < configs.n_balls; i++)
-    {
-        float x = static_cast<float>(SIM_WIDTH_IN_METERS) * RNG::getNormalized();
-        float y = SIM_HEIGHT_IN_METERS - (5.0f * RNG::getNormalized());
-        float r = configs.ball_radius_min + (configs.ball_radius_max * RNG::getNormalized());
-        float vx = 5.0f * RNG::getNormalized();
-        float vy = 5.0f * RNG::getNormalized();
-        Color color = RNG::getValue(0, 1) ? configs.color_valid : configs.color_invalid;
-
-        balls[i].init(x, y, vx, vy, r, r * r * PI, color);
-    }    
-
+void Level::setup(void) 
+{ 
+    balls.clear();
     bucket.init(Vec2(0.0f, 0.0f), 2.0f, 3.0f, 1.0f, RED);
+
+    cannon_configs.pos = Vec2(SIM_WIDTH_IN_METERS - 1.0f, 12.0f),
+    cannon_configs.direction = Vec2(-15.0f, 0.0f),
+    cannon_configs.time_between_shots_s = 0.377f,
+    cannon_configs.ball_limit = 30,
+    cannon_configs.min_ball_radius = 0.25f,
+    cannon_configs.max_ball_radius = 0.40f,
+    cannon_configs.color = BLUE;
+    cannon.init(&cannon_configs);
+
+    cannon2_configs.pos = Vec2(1.0f, 12.0f),
+    cannon2_configs.direction = Vec2(15.0f, 0.0f),
+    cannon2_configs.time_between_shots_s = 0.236f,
+    cannon2_configs.ball_limit = 30,
+    cannon2_configs.min_ball_radius = 0.25f,
+    cannon2_configs.max_ball_radius = 0.40f,
+    cannon2_configs.color = WHITE;
+    cannon2.init(&cannon2_configs);
+}
+
+void Level::register_new_ball(Ball ball)
+{
+    balls.push_back(ball);
 }
 
 void Level::loop()
 {
+    cannon.update();
+    cannon2.update();
     bucket.update(user_input->position_on_x_axis, user_input->position_on_y_axis);
 
-    for (size_t i = 0; i < configs.n_balls; i++)
+    for (size_t i = 0; i < balls.size(); i++)
     {
         balls[i].update();
 
-        // isso pode ser melhorado com hashing pra não ser chamado pra todas as bolinhas
-        for(size_t j = i + 1; j < configs.n_balls; j++)
+        for (size_t j = i + 1; j < balls.size(); j++)
         {
             handle_ball_collision(balls[i], balls[j], 0.707f);
         }
@@ -53,8 +66,12 @@ void Level::loop()
         handle_bar_collision(bucket.bar_bottom, balls[i]);
         handle_bar_collision(bucket.bar_right, balls[i]);
         balls[i].draw();
+
+        if ((balls[i].pos.y - balls[i].rad) <= 0.0f)
+        {
+            balls.erase(balls.begin() + i);
+        }
     }
 
     bucket.draw();
 }
-

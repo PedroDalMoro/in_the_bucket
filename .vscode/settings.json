@@ -1,4 +1,5 @@
 {
+    "editor.formatOnSave": true,
     "C_Cpp.default.compilerPath": "C:\\raylib\\w64devkit\\bin\\g++.exe",
     "files.associations": {
         "cmath": "cpp",

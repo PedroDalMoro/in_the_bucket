@@ -10,10 +10,11 @@
 #include "level.hpp"
 #include "slider.hpp"
 #include "button.hpp"
+#include "cannon.hpp"
 
 #include <iostream>
 
-#define N_BALLS    10
+#define N_BALLS 10
 
 void print_number(float number_to_print, int x, int y)
 {
@@ -21,19 +22,18 @@ void print_number(float number_to_print, int x, int y)
     DrawText(str.c_str(), x, y, 20, WHITE);
 }
 
-int main () 
+int main()
 {
     RNG::init();
     user_input_t user_input = {5.0f, 5.0f};
 
     level_configs_t level_configs = {
-        .n_balls = N_BALLS,
-        .color_valid = WHITE,
-        .color_invalid = RED,
-        .ball_radius_min = 0.25f,
+        .n_balls = N_BALLS, 
+        .color_valid = WHITE, 
+        .color_invalid = RED, 
+        .ball_radius_min = 0.25f, 
         .ball_radius_max = 0.40f
     };
-
     Level level(level_configs, &user_input);
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
@@ -46,12 +46,12 @@ int main ()
     Button button2(Vec2(0.2f, 12.0f), "BTN2", BUTTON_TYPE_LATCH);
     Button button3(Vec2(0.2f, 10.0f), "BTN3", BUTTON_TYPE_LATCH);
 
-    while (!WindowShouldClose()) 
+    while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(DARKGRAY);
 
-        if (IsKeyDown(KEY_LEFT)) user_input.position_on_x_axis -= 0.003f;    
+        if (IsKeyDown(KEY_LEFT)) user_input.position_on_x_axis -= 0.003f;
         if (IsKeyDown(KEY_RIGHT)) user_input.position_on_x_axis += 0.003f;
         if (IsKeyDown(KEY_UP)) user_input.position_on_y_axis += 0.003f;
         if (IsKeyDown(KEY_DOWN)) user_input.position_on_y_axis -= 0.003f;
