@@ -2,6 +2,7 @@
 
 #include "rng.hpp"
 #include "engine.hpp"
+#include <string>
 
 std::vector<Ball> Level::balls;
 
@@ -42,6 +43,12 @@ void Level::setup(void)
     cannon2.init(&cannon2_configs);
 }
 
+void Level::print_scoring_balls_on_screen(void)
+{
+    std::string str = std::to_string(scoring_balls_on_screen);
+    DrawText(str.c_str(), 10, SCREEN_HEIGHT - 20, 20, WHITE);
+}
+
 void Level::register_new_ball(Ball ball)
 {
     balls.push_back(ball);
@@ -52,6 +59,8 @@ void Level::loop()
     cannon.update();
     cannon2.update();
     bucket.update(user_input->position_on_x_axis, user_input->position_on_y_axis);
+
+    scoring_balls_on_screen = 0;
 
     for (size_t i = 0; i < balls.size(); i++)
     {
@@ -71,7 +80,16 @@ void Level::loop()
         {
             balls.erase(balls.begin() + i);
         }
+
+        if (balls[i].color.r == SCORING_BALL_COLOR_R &&
+            balls[i].color.g == SCORING_BALL_COLOR_G &&
+            balls[i].color.b == SCORING_BALL_COLOR_B &&
+            balls[i].color.a == SCORING_BALL_COLOR_A)
+        {
+            scoring_balls_on_screen++;
+        }
     }
 
     bucket.draw();
+    print_scoring_balls_on_screen();
 }
