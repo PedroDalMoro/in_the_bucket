@@ -83,6 +83,4 @@ int main()
 /*
     Coisas que faltam, versão simplificada:
     - criar estrutura pra ter mais levels (mais pro final isso)
-    - criar contador de bolas na tela (fazer isso com new e delete afu)
-    - tentar implementar velocidade do balde (pra se bater nas bolinhas também)
 */

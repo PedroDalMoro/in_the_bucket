@@ -16,8 +16,6 @@ private:
     float top_bottom_diff;
     Color color;
 
-    Vec2 pos;                   // posição no topo esquerdo
-
     Vec2 point_top_left;
     Vec2 point_bottom_left;
     Vec2 point_top_right;

@@ -76,8 +76,8 @@ void handle_bar_collision(Bar bar, Ball& bola)
 
     Ball collision_ball(closest_point.x, 
                         closest_point.y, 
-                        -bola.vel.x, 
-                        -bola.vel.y, 
+                        bar.speed_from_last_frame.x, 
+                        bar.speed_from_last_frame.y, 
                         rad, 
                         bola.mass,
                         BLUE);

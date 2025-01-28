@@ -27,7 +27,7 @@ void Level::setup(void)
     cannon_configs.pos = Vec2(SIM_WIDTH_IN_METERS - 1.0f, 12.0f),
     cannon_configs.direction = Vec2(-15.0f, 0.0f),
     cannon_configs.time_between_shots_s = 0.377f,
-    cannon_configs.ball_limit = 30,
+    cannon_configs.ball_limit = 100,
     cannon_configs.min_ball_radius = 0.25f,
     cannon_configs.max_ball_radius = 0.40f,
     cannon_configs.color = BLUE;
@@ -36,7 +36,7 @@ void Level::setup(void)
     cannon2_configs.pos = Vec2(1.0f, 12.0f),
     cannon2_configs.direction = Vec2(15.0f, 0.0f),
     cannon2_configs.time_between_shots_s = 0.236f,
-    cannon2_configs.ball_limit = 30,
+    cannon2_configs.ball_limit = 100,
     cannon2_configs.min_ball_radius = 0.25f,
     cannon2_configs.max_ball_radius = 0.40f,
     cannon2_configs.color = WHITE;
