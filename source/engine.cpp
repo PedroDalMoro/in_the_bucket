@@ -86,6 +86,31 @@ void handle_bar_collision(Bar bar, Ball& bola)
     handle_ball_collision(collision_ball, bola, 0.707f);
 }
 
+bool is_ball_inside_bucket(Ball ball, Bucket bucket)
+{
+    bool inside_bucket = true;
+    Vec2 compare_point;
+
+    compare_point = get_closest_point_on_segment(ball.pos, bucket.bar_left.start_point_meters, bucket.bar_left.end_point_meters);
+    inside_bucket &= (ball.pos.x >= compare_point.x);
+    if (!inside_bucket) return false;
+
+    compare_point = get_closest_point_on_segment(ball.pos, bucket.bar_right.start_point_meters, bucket.bar_right.end_point_meters);
+    inside_bucket &= (ball.pos.x <= compare_point.x);
+    if (!inside_bucket) return false;
+
+    compare_point = get_closest_point_on_segment(ball.pos, bucket.bar_left.start_point_meters, bucket.bar_right.end_point_meters);
+    inside_bucket &= (ball.pos.y <= compare_point.y);
+    if (!inside_bucket) return false;
+
+    compare_point = get_closest_point_on_segment(ball.pos, bucket.bar_left.end_point_meters, bucket.bar_right.start_point_meters);
+    inside_bucket &= (ball.pos.y >= compare_point.y);
+    if (!inside_bucket) return false;
+
+    return inside_bucket;
+}
+
+
 float map_pixel_to_meters_x(int pos_x)
 {
     return (static_cast<float>(pos_x / SIM_SCALE));

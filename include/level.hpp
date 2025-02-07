@@ -15,12 +15,20 @@
 #define SCORING_BALL_COLOR_B    0xFF
 #define SCORING_BALL_COLOR_A    0xFF
 
+typedef enum {
+    LEVEL_MODE_EASY,
+    LEVEL_MODE_HARD,
+    LEVEL_MODE_SANDBOX
+}level_mode_t;
+
 struct level_configs_t {
-    size_t n_balls;
-    Color color_valid;
-    Color color_invalid;
+    int level_number;
+    int n_cannons;
+    int n_balls_per_cannon;
+    int base_time_between_shots_ms;
     float ball_radius_min;
     float ball_radius_max;
+    level_mode_t mode;
 };
 
 class Level {
@@ -29,16 +37,15 @@ class Level {
 private:
     level_configs_t configs;
     user_input_t *user_input;
-    int scoring_balls_on_screen;
-
-    Cannon cannon;
-    cannon_configs_t cannon_configs;
-
-    Cannon cannon2;
-    cannon_configs_t cannon2_configs;
-
     Bucket bucket;
+    Cannon *cannons;
+    cannon_configs_t *cannon_configs;           // lembrar que isso aqui vai ter que ser deletado alguma hora!!! Ver quando fazer isso, ou se vai ser automático quando deletar o level
+
     static std::vector<Ball> balls;
+    static int number_of_balls_shot;
+
+    int scoring_balls_on_screen;
+    int non_scoring_balls_on_screen;
     
     void setup(void);
     void print_scoring_balls_on_screen(void);
@@ -48,6 +55,8 @@ public:
     ~Level();
 
     static void register_new_ball(Ball ball);
+    bool won(void);
+    bool have_finished(void);
     void loop();
 };
 

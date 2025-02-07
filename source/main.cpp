@@ -27,60 +27,100 @@ int main()
     RNG::init();
     user_input_t user_input = {5.0f, 5.0f};
 
-    level_configs_t level_configs = {
-        .n_balls = N_BALLS, 
-        .color_valid = WHITE, 
-        .color_invalid = RED, 
-        .ball_radius_min = 0.25f, 
-        .ball_radius_max = 0.40f
-    };
-    Level level(level_configs, &user_input);
+    Level *level = nullptr;
+    level_configs_t level_configs;
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
 
-    Slider slider(SLIDER_POS_1);
-    Slider slider2(SLIDER_POS_2, false);
-    Slider slider3(SLIDER_POS_3);
-
-    Button button1(Vec2(0.2f, 14.0f), "BTN1", BUTTON_TYPE_LATCH);
-    Button button2(Vec2(0.2f, 12.0f), "BTN2", BUTTON_TYPE_LATCH);
-    Button button3(Vec2(0.2f, 10.0f), "BTN3", BUTTON_TYPE_LATCH);
-
+    // momento pra escolher o level, ver melhor depois
     while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(DARKGRAY);
+
+        DrawText("Chose mode:", 10, 40, 20, WHITE);
+        DrawText("E - Easy", 10, 70, 20, WHITE);
+        DrawText("H - Hard", 10, 100, 20, WHITE);
+        DrawText("S - Sandbox", 10, 130, 20, WHITE);
+        DrawText("ESC - Exit", 10, 160, 20, WHITE);
+
+        if (IsKeyDown(KEY_E))
+        {
+            level_configs.level_number = 1;
+            level_configs.n_cannons = 2;
+            level_configs.n_balls_per_cannon = 10;
+            level_configs.base_time_between_shots_ms = 300;
+            level_configs.ball_radius_min = 0.2f;
+            level_configs.ball_radius_max = 0.3f;
+            level_configs.mode = LEVEL_MODE_EASY;
+
+            level = new Level(level_configs, &user_input);
+            EndDrawing();
+            break;
+        }
+
+        else if (IsKeyDown(KEY_H))
+        {
+
+        }
+
+        else if (IsKeyDown(KEY_S))
+        {
+
+        }
+
+        DrawFPS(10, 10);
+        EndDrawing();
+    }
+
+    // antes de começar, cria o novo level com as configurações iniciais básicas
+
+    while (!WindowShouldClose())
+    {
+        BeginDrawing();
+        ClearBackground(BLACK);
 
         if (IsKeyDown(KEY_LEFT)) user_input.position_on_x_axis -= 0.003f;
         if (IsKeyDown(KEY_RIGHT)) user_input.position_on_x_axis += 0.003f;
         if (IsKeyDown(KEY_UP)) user_input.position_on_y_axis += 0.003f;
         if (IsKeyDown(KEY_DOWN)) user_input.position_on_y_axis -= 0.003f;
 
-        level.loop();
-
-        slider.update();
-        slider.draw();
-        slider2.update();
-        slider2.draw();
-        slider3.update();
-        slider3.draw();
-
-        button1.update();
-        button1.draw();
-        button2.update();
-        button2.draw();
-        button3.update();
-        button3.draw();
+        level->loop();
 
         DrawFPS(10, 10);
         EndDrawing();
+
+        if (level->have_finished())
+        {
+            if (level->won())
+            {
+                DrawText("Level Cleared!", 10, 40, 20, DARKGREEN);
+            }
+            else
+            {
+                DrawText("Level Failed!", 10, 40, 20, DARKPURPLE);
+            }
+        }
     }
+
+    // depois de terminar, caso tenha ganho o level, delete aquele e seta novas configurações (pode ser meio random baseado no número do level?)
 
     CloseWindow();
     return 0;
 }
 
 /*
-    Coisas que faltam, versão simplificada:
-    - criar estrutura pra ter mais levels (mais pro final isso)
+    A estrutura dos levels vai ser:
+
+    Modo fácil:
+    - o level sempre sobe de 1 em 1
+    - no level N, pelo menos N bolas brancas tem que ficar na tela (dentro do balde) quando tudo acabar
+    - número de bolas por level pode ir aumentando (ver ainda o tanto que faça sentido)
+
+    Modo difícil:
+    - mesma coisa, mas tem que conter exatamente N bolas no final 
+
+    Modo sandbox
+    - se eu estiver super afim, posso fazer isso, melhorar um pouco os botões e sliders e deixar a área de só se bobiar com as bolinhas um pouco 
+    - eu quero acabar logo, mas agora to gostando, então dá pra passar um pouco mais de tempo nisso também 
 */
