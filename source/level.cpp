@@ -24,7 +24,8 @@ Level::Level(const level_configs_t level_configs, user_input_t *user_input)
 
 Level::~Level() 
 {
-
+    delete[] cannons;
+    delete[] cannon_configs;
 }
 
 void Level::setup(void) 
@@ -80,7 +81,8 @@ bool Level::have_finished(void)
 
     if (number_of_balls_shot == (configs.n_cannons * configs.n_balls_per_cannon))
     {
-        if (scoring_balls_on_screen == 0 && non_scoring_balls_on_screen == 0)
+        if ((scoring_balls_on_screen == 0 && non_scoring_balls_on_screen == 0) || 
+             scoring_balls_on_screen < configs.level_number)
         {
             ret = true;
         }
@@ -162,7 +164,7 @@ void Level::loop()
         }
 
         bucket.draw();
-        print_scoring_balls_on_screen();
+        // print_scoring_balls_on_screen();
     }
     else
     {
@@ -171,6 +173,9 @@ void Level::loop()
             balls[i].draw();
         }
         bucket.draw();
-        print_scoring_balls_on_screen();
+        // print_scoring_balls_on_screen();
     }
+
+    std::string level_number = "Level: " + std::to_string(configs.level_number);
+    DrawText(level_number.c_str(), SCREEN_WIDTH - 90, 10, 20, WHITE);
 }

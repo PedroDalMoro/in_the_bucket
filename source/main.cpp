@@ -13,8 +13,9 @@
 #include "cannon.hpp"
 
 #include <iostream>
-
-#define N_BALLS 10
+static Level *level = nullptr;
+static bool start_menu = true;
+static int current_level = 1;
 
 void print_number(float number_to_print, int x, int y)
 {
@@ -22,39 +23,42 @@ void print_number(float number_to_print, int x, int y)
     DrawText(str.c_str(), x, y, 20, WHITE);
 }
 
-int main()
+bool wait_for_key_press(int key)
 {
-    RNG::init();
-    user_input_t user_input = {5.0f, 5.0f};
+    return IsKeyPressed(key);
+}
 
-    Level *level = nullptr;
-    level_configs_t level_configs;
+void setup_new_level(level_configs_t &level_configs, user_input_t &user_input, int level_number, level_mode_t mode)
+{
+    level_configs.level_number = level_number;
+    level_configs.n_cannons = 2;
+    level_configs.n_balls_per_cannon = 10 + (level_number * 2);
+    level_configs.base_time_between_shots_ms = 400 - (RNG::getValue(0, level_number * 15));
+    level_configs.ball_radius_min = 0.2f;
+    level_configs.ball_radius_max = 0.3f;
+    level_configs.mode = mode;
 
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
+    level = new Level(level_configs, &user_input);
+}
 
-    // momento pra escolher o level, ver melhor depois
+void chose_mode(level_configs_t &level_configs, user_input_t &user_input)
+{
+    current_level = 1;
     while (!WindowShouldClose())
     {
         BeginDrawing();
-        ClearBackground(DARKGRAY);
+        ClearBackground(BLACK);
 
-        DrawText("Chose mode:", 10, 40, 20, WHITE);
-        DrawText("E - Easy", 10, 70, 20, WHITE);
-        DrawText("H - Hard", 10, 100, 20, WHITE);
-        DrawText("S - Sandbox", 10, 130, 20, WHITE);
-        DrawText("ESC - Exit", 10, 160, 20, WHITE);
+        DrawText("Goal: Finish the level with the right number of WHITE balls inside the bucket!", 10, 40, 20, WHITE);
+        DrawText("Chose mode:", 10, 100, 20, WHITE);
+        DrawText("E - Easy (AT LEAST the same number of balls as the level number)", 10, 130, 20, WHITE);
+        DrawText("H - Hard (EXACTLY the same number of balls as the level number)", 10, 160, 20, WHITE);
+        DrawText("S - Sandbox", 10, 190, 20, WHITE);
+        DrawText("ESC - Exit", 10, 220, 20, WHITE);
 
         if (IsKeyDown(KEY_E))
         {
-            level_configs.level_number = 1;
-            level_configs.n_cannons = 2;
-            level_configs.n_balls_per_cannon = 10;
-            level_configs.base_time_between_shots_ms = 300;
-            level_configs.ball_radius_min = 0.2f;
-            level_configs.ball_radius_max = 0.3f;
-            level_configs.mode = LEVEL_MODE_EASY;
-
-            level = new Level(level_configs, &user_input);
+            setup_new_level(level_configs, user_input, current_level, LEVEL_MODE_EASY);
             EndDrawing();
             break;
         }
@@ -73,17 +77,33 @@ int main()
         EndDrawing();
     }
 
-    // antes de começar, cria o novo level com as configurações iniciais básicas
+    start_menu = false;
+}
+
+int main()
+{
+    RNG::init();
+    user_input_t user_input = {5.0f, 5.0f};
+    level_configs_t level_configs;
+
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
 
     while (!WindowShouldClose())
     {
+        // block until level mode is selected
+        if (start_menu) chose_mode(level_configs, user_input);
+
+        // this is the game loop
         BeginDrawing();
         ClearBackground(BLACK);
 
-        if (IsKeyDown(KEY_LEFT)) user_input.position_on_x_axis -= 0.003f;
-        if (IsKeyDown(KEY_RIGHT)) user_input.position_on_x_axis += 0.003f;
-        if (IsKeyDown(KEY_UP)) user_input.position_on_y_axis += 0.003f;
-        if (IsKeyDown(KEY_DOWN)) user_input.position_on_y_axis -= 0.003f;
+        float dt = GetFrameTime();
+        float movement_update = dt / 0.1;   // this is a magic value, tweeked until it felt right
+
+        if (IsKeyDown(KEY_LEFT)) user_input.position_on_x_axis -= movement_update;
+        if (IsKeyDown(KEY_RIGHT)) user_input.position_on_x_axis += movement_update;
+        if (IsKeyDown(KEY_UP)) user_input.position_on_y_axis += movement_update;
+        if (IsKeyDown(KEY_DOWN)) user_input.position_on_y_axis -= movement_update;
 
         level->loop();
 
@@ -94,16 +114,27 @@ int main()
         {
             if (level->won())
             {
-                DrawText("Level Cleared!", 10, 40, 20, DARKGREEN);
+                DrawText("Level Cleared! Press SPACEBAR to continue.", 10, 40, 20, GREEN);
+                if (wait_for_key_press(KEY_SPACE))
+                {
+                    level_mode_t mode = level_configs.mode;
+                    current_level++;
+
+                    delete level;
+                    setup_new_level(level_configs, user_input, current_level, mode);
+                }
             }
             else
             {
-                DrawText("Level Failed!", 10, 40, 20, DARKPURPLE);
+                DrawText("Level Failed! Press SPACEBAR to go back to menu.", 10, 40, 20, PURPLE);
+                if (wait_for_key_press(KEY_SPACE))
+                {
+                    delete level;
+                    start_menu = true;
+                }
             }
         }
     }
-
-    // depois de terminar, caso tenha ganho o level, delete aquele e seta novas configurações (pode ser meio random baseado no número do level?)
 
     CloseWindow();
     return 0;
