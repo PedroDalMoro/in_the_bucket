@@ -3,12 +3,23 @@
 #include "rng.hpp"
 #include "engine.hpp"
 #include <string>
+#include <iostream>
 
-#define CANNON_STARTING_VECTORS     2       // [0]: pos, [1]: direction
+#define CANNON_STARTING_VECTORS     2                   // [0]: pos, [1]: direction
 
 static Vec2 cannon_starting_positions[][CANNON_STARTING_VECTORS] = {
-    {Vec2(SIM_WIDTH_IN_METERS - 1.0f, 12.0f),   Vec2(15.0f, 0.0f)},
-    {Vec2(1.0f, 12.0f),                         Vec2(-15.0f, 0.0f)},
+    {Vec2(SIM_WIDTH_IN_METERS - (SIM_WIDTH_IN_METERS * 0.03f), SIM_HEIGHT_IN_METERS * 0.8f),     Vec2(-SIM_WIDTH_IN_METERS * 0.75f, 0.0f)},
+    {Vec2(SIM_WIDTH_IN_METERS * 0.03f, SIM_HEIGHT_IN_METERS * 0.8f),                             Vec2(SIM_WIDTH_IN_METERS * 0.75f, 0.0f)},
+    {Vec2(SIM_WIDTH_IN_METERS - (SIM_WIDTH_IN_METERS * 0.03f), (SIM_HEIGHT_IN_METERS * 0.95f)),  Vec2(-SIM_WIDTH_IN_METERS * 0.75f, -SIM_HEIGHT_IN_METERS * 0.15f)},
+    {Vec2(SIM_WIDTH_IN_METERS * 0.03f, SIM_HEIGHT_IN_METERS * 1.1f),                             Vec2(SIM_WIDTH_IN_METERS * 0.75f, -SIM_HEIGHT_IN_METERS * 0.75f)},
+    {Vec2(SIM_WIDTH_IN_METERS * 0.5f, SIM_HEIGHT_IN_METERS * 1.5f),                              Vec2(0.0f, -SIM_HEIGHT_IN_METERS * 1.5f)},
+};
+
+static unsigned char cannon_ball_colors[][3] = {        // [0]: R, [1]: G, [2]: B
+    {255, 100, 100},
+    {100, 100, 255},
+    {100, 255, 100},
+    {255, 255, 20},
 };
 
 std::vector<Ball> Level::balls;
@@ -50,9 +61,9 @@ void Level::setup(void)
         // only the first cannon should have valid colored balls
         if (cannon != 0)
         {
-            cannon_configs[cannon].color.r = RNG::getValue(0, 200);
-            cannon_configs[cannon].color.g = RNG::getValue(0, 200);
-            cannon_configs[cannon].color.b = RNG::getValue(0, 200);
+            cannon_configs[cannon].color.r = cannon_ball_colors[cannon - 1][0];
+            cannon_configs[cannon].color.g = cannon_ball_colors[cannon - 1][1];
+            cannon_configs[cannon].color.b = cannon_ball_colors[cannon - 1][2];
             cannon_configs[cannon].color.a = 255;
         }
 

@@ -31,12 +31,14 @@ bool wait_for_key_press(int key)
 void setup_new_level(level_configs_t &level_configs, user_input_t &user_input, int level_number, level_mode_t mode)
 {
     level_configs.level_number = level_number;
-    level_configs.n_cannons = 2;
-    level_configs.n_balls_per_cannon = 10 + (level_number * 2);
-    level_configs.base_time_between_shots_ms = 400 - (RNG::getValue(0, level_number * 15));
+    level_configs.n_balls_per_cannon = 10 + (level_number * 3);
+    level_configs.base_time_between_shots_ms = 500 - (RNG::getValue(level_number * 15, (level_number + 1) * 15));
     level_configs.ball_radius_min = 0.2f;
-    level_configs.ball_radius_max = 0.3f;
+    level_configs.ball_radius_max = 0.4f;
     level_configs.mode = mode;
+
+    int current_number_of_cannons = 2 + (level_number / 4);
+    level_configs.n_cannons = current_number_of_cannons > 5 ? 5 : current_number_of_cannons;
 
     level = new Level(level_configs, &user_input);
 }
@@ -49,12 +51,12 @@ void chose_mode(level_configs_t &level_configs, user_input_t &user_input)
         BeginDrawing();
         ClearBackground(BLACK);
 
-        DrawText("Goal: Finish the level with the right number of WHITE balls inside the bucket!", 10, 40, 20, WHITE);
-        DrawText("Chose mode:", 10, 100, 20, WHITE);
-        DrawText("E - Easy (AT LEAST the same number of balls as the level number)", 10, 130, 20, WHITE);
-        DrawText("H - Hard (EXACTLY the same number of balls as the level number)", 10, 160, 20, WHITE);
-        DrawText("S - Sandbox", 10, 190, 20, WHITE);
-        DrawText("ESC - Exit", 10, 220, 20, WHITE);
+        DrawText("Goal: Finish the level with the right number of WHITE balls inside the bucket!", 10, 40, 20, GRAY);
+        DrawText("Chose mode:", 10, 100, 20, GRAY);
+        DrawText("E - Easy (AT LEAST the same number of balls as the level number)", 10, 130, 20, GRAY);
+        DrawText("H - Hard (EXACTLY the same number of balls as the level number)", 10, 160, 20, GRAY);
+        DrawText("S - Sandbox (Yet to be implemented, one day...)", 10, 190, 20, GRAY);
+        DrawText("ESC - Exit", 10, 220, 20, GRAY);
 
         if (IsKeyDown(KEY_E))
         {
@@ -98,7 +100,7 @@ int main()
         ClearBackground(BLACK);
 
         float dt = GetFrameTime();
-        float movement_update = dt / 0.1;   // this is a magic value, tweeked until it felt right
+        float movement_update = dt / 0.075;   // this is a magic value, tweeked until it felt right
 
         if (IsKeyDown(KEY_LEFT)) user_input.position_on_x_axis -= movement_update;
         if (IsKeyDown(KEY_RIGHT)) user_input.position_on_x_axis += movement_update;
@@ -108,8 +110,7 @@ int main()
         level->loop();
 
         DrawFPS(10, 10);
-        EndDrawing();
-
+        
         if (level->have_finished())
         {
             if (level->won())
@@ -119,7 +120,7 @@ int main()
                 {
                     level_mode_t mode = level_configs.mode;
                     current_level++;
-
+                    
                     delete level;
                     setup_new_level(level_configs, user_input, current_level, mode);
                 }
@@ -134,6 +135,8 @@ int main()
                 }
             }
         }
+
+        EndDrawing();
     }
 
     CloseWindow();
