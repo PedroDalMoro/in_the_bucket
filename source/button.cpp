@@ -86,7 +86,7 @@ void Button::draw(void)
     DrawRectangle(map_meters_to_pixel_x(pos.x), 
                     map_meters_to_pixel_y(pos.y), 
                     map_meters_to_pixel_x(width), 
-                    map_meters_to_pixel_x(BUTTON_HEIGHT),       // mapeando os dois com a função de x porque é a que não aplica mudanças
+                    map_meters_to_pixel_x(BUTTON_HEIGHT),       // mapping both with the fuction for X, since it just scales things
                     color);
 
     DrawText(text.c_str(),

@@ -4,19 +4,19 @@
 #include <cmath>
 
 /**
- * @brief Classe que lida com as operações matemáticas nos vetores (x e y). 
+ * @brief Class that handles mathematical operations on vectors (x and y).
  * 
- * TODO: testei todas as operações, mas se algum dia a gente fizer as coisas de unit tests, 
- * essa classe seria um lugar bem bom pra começar, porque todas as funções tem um resultado 
- * esperado claro, sem outros efeitos. 
+ * TODO: I tested all operations, but if we ever do unit tests, 
+ * this class would be a good place to start because all functions have a clear expected result, 
+ * without other effects.
  */
 class Vec2
 {
 private:
-    void _copy(float x, float y);                    // atribui um vetor ao outro 
-    void _scalar(float scalar);                      // multiplica o vetor por um escalar
-    void _add(float x, float y);                     // soma valores ao vetor 
-    void _subtract(float x, float y);                // diminui valores do vetor
+    void _copy(float x, float y);                    // assigns one vector to another
+    void _scalar(float scalar);                      // multiplies the vector by a scalar
+    void _add(float x, float y);                     // adds values to the vector
+    void _subtract(float x, float y);                // subtracts values from the vector
 
 public:
     float x;
@@ -26,27 +26,27 @@ public:
     Vec2(const Vec2& copy);
     ~Vec2();
 
-    // operadores pra lidar direto com os vetores
-    void operator = (Vec2 item);                    // atribui um vetor ao outro 
-    void operator *= (float scalar);                // multiplica o vetor por um escalar
-    void operator += (Vec2 item);                   // soma um vetor ao outro 
-    void operator -= (Vec2 item);                   // diminui um vetor do outro (primeiro menos o segundo)
+    // operators to directly handle vectors
+    void operator = (Vec2 item);                    // assigns one vector to another
+    void operator *= (float scalar);                // multiplies the vector by a scalar
+    void operator += (Vec2 item);                   // adds one vector to another
+    void operator -= (Vec2 item);                   // subtracts one vector from another (first minus the second)
 
-    // mesmo que os operadores, mas com funções
-    void set(float x, float y);                     // atribui valores ao vetor
-    void copy(Vec2 other);                          // atribui um vetor ao outro 
-    void scalar(float scalar);                      // multiplica o vetor por um escalar
-    void add(float x, float y);                     // soma valores ao vetor 
-    void add(Vec2 other);                           // soma um vetor ao outro 
-    void subtract(float x, float y);                // diminui valores do vetor
-    void subtract(Vec2 other);                      // diminui um vetor do outro (this - other)
+    // same as operators, but with functions
+    void set(float x, float y);                     // assigns values to the vector
+    void copy(Vec2 other);                          // assigns one vector to another
+    void scalar(float scalar);                      // multiplies the vector by a scalar
+    void add(float x, float y);                     // adds values to the vector
+    void add(Vec2 other);                           // adds one vector to another
+    void subtract(float x, float y);                // subtracts values from the vector
+    void subtract(Vec2 other);                      // subtracts one vector from another (this - other)
 
-    // outras funções pra matemática de vetores
-    float getLength();                              // retorna o tamanho (módulo) do vetor
-    Vec2 getNormalized();                           // retorna o vetor normalizado (dividido pelo módulo)
-    float dotProduct(Vec2 other);                   // retorna o dot procutd ((vx * ux) + (vy * uy))
+    // other functions for vector mathematics
+    float getLength();                              // returns the length (magnitude) of the vector
+    Vec2 getNormalized();                           // returns the normalized vector (divided by the magnitude)
+    float dotProduct(Vec2 other);                   // returns the dot product ((vx * ux) + (vy * uy))
 
-    // são declaradas como static pra poder acessar sem o objeto (Vec2::func() por exemplo)
+    // declared as static to be accessible without the object (Vec2::func() for example)
     static Vec2 getVectorSubtraction(Vec2 left, Vec2 right);
     static Vec2 getVectorAddition(Vec2 left, Vec2 right);
     static Vec2 getVectorScaled(Vec2 vector, float scalar);

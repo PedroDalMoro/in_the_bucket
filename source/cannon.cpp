@@ -31,7 +31,6 @@ Ball Cannon::generate_random_ball(void)
               radius, 
               PI * radius * radius,
               cannon_configs->color,
-              true,
               true);
 
     return ball;

@@ -6,9 +6,9 @@ Ball::Ball()
 }
 
 Ball::Ball(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, 
-           float mass, Color color, bool ignore_first_wall, bool ignore_floor)
+           float mass, Color color, bool ignore_floor)
 {
-    init(pos_x_meters, pos_y_meters, vel_x_mps, vel_y_mps, rad_meters, mass, color, ignore_first_wall, ignore_floor);
+    init(pos_x_meters, pos_y_meters, vel_x_mps, vel_y_mps, rad_meters, mass, color, ignore_floor);
 }
 
 Ball::~Ball()
@@ -16,17 +16,16 @@ Ball::~Ball()
 }
 
 void Ball::init(float pos_x_meters, float pos_y_meters, float vel_x_mps, float vel_y_mps, float rad_meters, 
-                float mass, Color color, bool ignore_first_wall, bool ignore_floor)
+                float mass, Color color, bool ignore_floor)
 {
     this->pos.x = pos_x_meters;
     this->pos.y = pos_y_meters;
     this->vel.x = vel_x_mps;
     this->vel.y = vel_y_mps;
     this->rad = rad_meters;
-    this->mass = mass;          // NOTE: no idea what is this measurement unit
+    this->mass = mass;                              // NOTE: no idea what is this measurement unit
     this->color = color;
 
-    this->ignore_first_wall = ignore_first_wall;            // isso não funcionou e não to afim de lidar agora...
     this->ignore_floor = ignore_floor;
 }
 

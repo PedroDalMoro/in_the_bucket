@@ -1,6 +1,6 @@
 #include "vector_2.hpp"
 
-// funções privadas
+// private functions
 
 void Vec2::_copy(float x, float y)
 {
@@ -26,7 +26,7 @@ void Vec2::_subtract(float x, float y)
     this->y -= y;
 }
 
-// construtores
+// constructors
 
 Vec2::Vec2(float x, float y)
 {
@@ -35,14 +35,14 @@ Vec2::Vec2(float x, float y)
 
 Vec2::Vec2(const Vec2& other) : x(other.x), y(other.y)
 {
-    // esse é o construtor de cópia, pra evitar os warnings na hora de criar os objetos com = na frente
+    // this is the copy constructor, to avoid warnings when creating objects with = in front
 }
 
 Vec2::~Vec2()
 {
 }
 
-// funções públicas
+// public functions
 
 void Vec2::operator = (Vec2 item)
 {

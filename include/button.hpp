@@ -1,7 +1,10 @@
-// NOTE: por algum motivo, se tenho vários botões perto um do outro, o clique neles se soberscreve. 
-// Acho que pode ter algo a ver com o jeito que estou lidando com as conversões de medidas entre pixels e 
-// metros. Quem sabe pra essas coisas que não são realmente físicas (botões, sliders), eu poderia usar somente pixels mesmo.
+/*
+    NOTE: This button class ended up not being used, and probably didn't work as well as I would have liked...
 
+    For some reason, if I have several buttons close to each other, clicking on them overrides each other.
+    I think it might have something to do with the way I'm handling the conversions between pixels and
+    meters. Maybe for these things that aren't really physical (buttons, sliders), I could just use pixels.
+*/
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 
@@ -16,8 +19,8 @@
 #define BUTTON_DEBOUNCE_S   1.0
 
 typedef enum {
-    BUTTON_TYPE_LATCH,              // botão do tipo trava, alterna entre o estado ON e OFF
-    BUTTON_TYPE_MOMENTARY           // botão do tipo momentâneo, retorna apenas uma vez o estado ON
+    BUTTON_TYPE_LATCH,              // switches between ON and OFF states
+    BUTTON_TYPE_MOMENTARY           // returns only once the ON state
 } button_type_t;
 
 class Button

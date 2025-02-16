@@ -39,7 +39,7 @@ private:
     user_input_t *user_input;
     Bucket bucket;
     Cannon *cannons;
-    cannon_configs_t *cannon_configs;           // lembrar que isso aqui vai ter que ser deletado alguma hora!!! Ver quando fazer isso, ou se vai ser automático quando deletar o level
+    cannon_configs_t *cannon_configs;
 
     static std::vector<Ball> balls;
     static int number_of_balls_shot;

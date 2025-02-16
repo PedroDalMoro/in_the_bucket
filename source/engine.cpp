@@ -2,7 +2,7 @@
 
 void handle_ball_collision(Ball& b1, Ball& b2, float coef_resitution)
 {
-    // verifica se as duas bolas estão colidindo entre si e retorna caso não estejam
+    // checks if the two balls are colliding with each other and returns if they are not
     Vec2 direction = Vec2::getVectorSubtraction(b2.pos, b1.pos);
     float distance = direction.getLength();
 
@@ -11,32 +11,32 @@ void handle_ball_collision(Ball& b1, Ball& b2, float coef_resitution)
         return;
     }
 
-    // se estão colidindo, calcula qual tem que ser a correção (quanto afastar uma da outra)
+    // if they are colliding, calculates the correction (how much to separate them)
     float correction = (b1.rad + b2.rad - distance) / 2.0f;
 
-    // normaliza a direção pra ser só a direção, e não importar o tamanho
+    // normalizes the direction to be just the direction, regardless of the size
     direction = direction.getNormalized();
 
-    // calcula as novas posições das bolas, adicionando pro vetor delas o tamanho da 
-    // correção na direção do vetor direction (normalizado antes)
+    // calculates the new positions of the balls, adding to their vector the size of the 
+    // correction in the direction of the direction vector (normalized before)
     Vec2 newpos_b1 = Vec2::getVectorScaled(direction, -correction);
     b1.pos.add(newpos_b1);
 
-    // NOTE: quando esqueci e deixei o sinal desse correction negativo, funcionava
-    // errado mas de um jeito legal kkkkk pode ser algo do jogo no futuro
+    // NOTE: when I forgot and left the sign of this correction negative, it worked
+    // wrong but in a cool way kkkkkk so it might be something for the game in the future
     Vec2 newpos_b2 = Vec2::getVectorScaled(direction, correction);
     b2.pos.add(newpos_b2);
 
-    // o dot product é basicamente quão parecidos são dois vetores. Se o resultado for 1, são iguais. 
-    // se for -1, são completamente opostos. Então pelo meu entendimento o que tá sendo calculado aqui
-    // é o quão parecidas são a velocidade atual da bola e a direção do impacto entre as duas
+    // the dot product is basically how similar two vectors are. If the result is 1, they are the same.
+    // if it is -1, they are completely opposite. So as I understand it, what is being calculated here
+    // is how similar the current speed of the ball is to the direction of the impact between the two
     float v1 = b1.vel.dotProduct(direction);
     float v2 = b2.vel.dotProduct(direction);
 
     float m1 = b1.mass;
     float m2 = b2.mass;
 
-    // calcula as novas velocidades depois da colisão, e aplica elas pras duas bolas
+    // calculates the new speeds after the collision, and applies them to the two balls
     float new_v1 = ((m1 * v1) + (m2 * v2) - ( m2 * (v1 - v2) * coef_resitution)) / (m1 + m2);
     float new_v2 = ((m1 * v1) + (m2 * v2) - ( m1 * (v2 - v1) * coef_resitution)) / (m1 + m2);
 
@@ -118,7 +118,7 @@ float map_pixel_to_meters_x(int pos_x)
 
 float map_pixel_to_meters_y(int pos_y)
 {
-    // isso aqui tá meio estranho mas tá funcionando, ver melhor outra hora
+    // ugly, but works
     return ( - static_cast<float>((pos_y - SCREEN_HEIGHT) / SIM_SCALE));
 }
 

@@ -11,7 +11,6 @@ void handle_ball_collision(Ball& b1, Ball& b2, float coef_resitution);
 void handle_bar_collision(Bar bar, Ball& bola);
 bool is_ball_inside_bucket(Ball ball, Bucket bucket);
 
-// na verdade to fazendo o contrário
 float map_pixel_to_meters_x(int pos_x);
 float map_pixel_to_meters_y(int pos_y);
 
