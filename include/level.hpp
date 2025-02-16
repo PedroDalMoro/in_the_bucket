@@ -46,6 +46,7 @@ private:
 
     int scoring_balls_on_screen;
     int non_scoring_balls_on_screen;
+    int extra_scoring_balls;
     
     void setup(void);
     void print_scoring_balls_on_screen(void);

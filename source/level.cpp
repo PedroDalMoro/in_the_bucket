@@ -5,9 +5,11 @@
 #include <string>
 #include <iostream>
 
-#define CANNON_STARTING_VECTORS     2                   // [0]: pos, [1]: direction
+#define SCORING_BALLS_PERIOD_VARIATION  0.75f               // scoring balls will be (100 - x)% faster, so they end kind of at the same time as the others
+#define SCORING_BALLS_COUNT_VARIATION   0.5f                // adding 50% more scoring balls to make it easier
+#define CANNON_SETUP_VECTORS            2                   // [0]: pos, [1]: direction
 
-static Vec2 cannon_starting_positions[][CANNON_STARTING_VECTORS] = {
+static Vec2 cannon_starting_positions[][CANNON_SETUP_VECTORS] = {
     {Vec2(SIM_WIDTH_IN_METERS - (SIM_WIDTH_IN_METERS * 0.03f), SIM_HEIGHT_IN_METERS * 0.8f),     Vec2(-SIM_WIDTH_IN_METERS * 0.75f, 0.0f)},
     {Vec2(SIM_WIDTH_IN_METERS * 0.03f, SIM_HEIGHT_IN_METERS * 0.8f),                             Vec2(SIM_WIDTH_IN_METERS * 0.75f, 0.0f)},
     {Vec2(SIM_WIDTH_IN_METERS - (SIM_WIDTH_IN_METERS * 0.03f), (SIM_HEIGHT_IN_METERS * 0.95f)),  Vec2(-SIM_WIDTH_IN_METERS * 0.75f, -SIM_HEIGHT_IN_METERS * 0.15f)},
@@ -52,8 +54,17 @@ void Level::setup(void)
     {
         cannon_configs[cannon].pos = cannon_starting_positions[cannon][0];
         cannon_configs[cannon].direction = cannon_starting_positions[cannon][1];
+
         cannon_configs[cannon].time_between_shots_s = (configs.base_time_between_shots_ms + RNG::getValue(0, 50)) / 1000.0f;
+        cannon_configs[cannon].time_between_shots_s *= (cannon == 0) ? SCORING_BALLS_PERIOD_VARIATION : 1.0f;
+
         cannon_configs[cannon].ball_limit = configs.n_balls_per_cannon;
+        if (cannon == 0)
+        {
+            extra_scoring_balls = configs.n_balls_per_cannon * SCORING_BALLS_COUNT_VARIATION;
+            cannon_configs[cannon].ball_limit += extra_scoring_balls;
+        }
+
         cannon_configs[cannon].min_ball_radius = configs.ball_radius_min;
         cannon_configs[cannon].max_ball_radius = configs.ball_radius_max;
         cannon_configs[cannon].color = WHITE;
@@ -90,7 +101,7 @@ bool Level::have_finished(void)
 {
     bool finished = true;
 
-    if (number_of_balls_shot == (configs.n_cannons * configs.n_balls_per_cannon))
+    if (number_of_balls_shot == ((configs.n_cannons * configs.n_balls_per_cannon) + extra_scoring_balls))
     {
         for (size_t i = 0; i < balls.size(); i++)
         {
@@ -118,6 +129,9 @@ bool Level::won(void)
 
 void Level::loop()
 {
+    // size can change inside this function, so I need to know the initial value
+    size_t balls_size = balls.size();
+
     if(!have_finished())
     {
         for (int i = 0; i < configs.n_cannons; i++)
@@ -129,11 +143,11 @@ void Level::loop()
         scoring_balls_on_screen = 0;
         non_scoring_balls_on_screen = 0;
 
-        for (size_t i = 0; i < balls.size(); i++)
+        for (size_t i = 0; i < balls_size; i++)
         {
             balls[i].update();
 
-            for (size_t j = i + 1; j < balls.size(); j++)
+            for (size_t j = i + 1; j < balls_size; j++)
             {
                 handle_ball_collision(balls[i], balls[j], 0.707f);
             }
@@ -147,17 +161,19 @@ void Level::loop()
             {
                 balls.erase(balls.begin() + i);
             }
-
-            if (balls[i].color.r == SCORING_BALL_COLOR_R &&
-                balls[i].color.g == SCORING_BALL_COLOR_G &&
-                balls[i].color.b == SCORING_BALL_COLOR_B &&
-                balls[i].color.a == SCORING_BALL_COLOR_A)
-            {
-                scoring_balls_on_screen++;
-            }
             else
             {
-                non_scoring_balls_on_screen++;
+                if (balls[i].color.r == SCORING_BALL_COLOR_R &&
+                    balls[i].color.g == SCORING_BALL_COLOR_G &&
+                    balls[i].color.b == SCORING_BALL_COLOR_B &&
+                    balls[i].color.a == SCORING_BALL_COLOR_A)
+                {
+                    scoring_balls_on_screen++;
+                }
+                else
+                {
+                    non_scoring_balls_on_screen++;
+                }
             }
         }
 
@@ -166,7 +182,7 @@ void Level::loop()
     }
     else
     {
-        for (size_t i = 0; i < balls.size(); i++)
+        for (size_t i = 0; i < balls_size; i++)
         {
             balls[i].draw();
         }
