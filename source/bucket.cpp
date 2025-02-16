@@ -50,9 +50,9 @@ void Bucket::init(Vec2 pos, float width, float height, float top_bottom_diff, Co
 
     update_bucket_points(pos.x, pos.y);
 
-    bar_left.init(point_top_left, point_bottom_left, 0.15, BLUE);
-    bar_bottom.init(point_bottom_left, point_bottom_right, 0.15, YELLOW);
-    bar_right.init(point_bottom_right, point_top_right, 0.15, RED);
+    bar_left.init(point_top_left, point_bottom_left, 0.15, GRAY);
+    bar_bottom.init(point_bottom_left, point_bottom_right, 0.15, GRAY);
+    bar_right.init(point_bottom_right, point_top_right, 0.15, GRAY);
 }
 
 void Bucket::update(float mouse_x, float mouse_y)

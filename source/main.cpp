@@ -55,7 +55,6 @@ void chose_mode(level_configs_t &level_configs, user_input_t &user_input)
         DrawText("Chose mode:", 10, 100, 20, GRAY);
         DrawText("E - Easy (AT LEAST the same number of balls as the level number)", 10, 130, 20, GRAY);
         DrawText("H - Hard (EXACTLY the same number of balls as the level number)", 10, 160, 20, GRAY);
-        DrawText("S - Sandbox (Yet to be implemented, one day...)", 10, 190, 20, GRAY);
         DrawText("ESC - Exit", 10, 220, 20, GRAY);
 
         if (IsKeyDown(KEY_E))
@@ -64,15 +63,12 @@ void chose_mode(level_configs_t &level_configs, user_input_t &user_input)
             EndDrawing();
             break;
         }
-
+        
         else if (IsKeyDown(KEY_H))
         {
-
-        }
-
-        else if (IsKeyDown(KEY_S))
-        {
-
+            setup_new_level(level_configs, user_input, current_level, LEVEL_MODE_HARD);
+            EndDrawing();
+            break;
         }
 
         DrawFPS(10, 10);
@@ -142,19 +138,3 @@ int main()
     CloseWindow();
     return 0;
 }
-
-/*
-    A estrutura dos levels vai ser:
-
-    Modo fácil:
-    - o level sempre sobe de 1 em 1
-    - no level N, pelo menos N bolas brancas tem que ficar na tela (dentro do balde) quando tudo acabar
-    - número de bolas por level pode ir aumentando (ver ainda o tanto que faça sentido)
-
-    Modo difícil:
-    - mesma coisa, mas tem que conter exatamente N bolas no final 
-
-    Modo sandbox
-    - se eu estiver super afim, posso fazer isso, melhorar um pouco os botões e sliders e deixar a área de só se bobiar com as bolinhas um pouco 
-    - eu quero acabar logo, mas agora to gostando, então dá pra passar um pouco mais de tempo nisso também 
-*/

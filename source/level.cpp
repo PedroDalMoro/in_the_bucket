@@ -88,35 +88,22 @@ void Level::register_new_ball(Ball ball)
 
 bool Level::have_finished(void)
 {
-    bool ret = false;
+    bool finished = true;
 
     if (number_of_balls_shot == (configs.n_cannons * configs.n_balls_per_cannon))
     {
-        if ((scoring_balls_on_screen == 0 && non_scoring_balls_on_screen == 0) || 
-             scoring_balls_on_screen < configs.level_number)
+        for (size_t i = 0; i < balls.size(); i++)
         {
-            ret = true;
-        }
-        else
-        {
-            int balls_inside_bucket = 0;
-            for (size_t i = 0; i < balls.size(); i++)
+            if (!is_ball_inside_bucket(balls[i], bucket))
             {
-                balls_inside_bucket += static_cast<int>(is_ball_inside_bucket(balls[i], bucket));
-            }
-
-            if (configs.mode == LEVEL_MODE_EASY)
-            {
-                ret = (balls_inside_bucket >= configs.level_number) && non_scoring_balls_on_screen == 0;
-            }
-            else if (configs.mode == LEVEL_MODE_HARD)
-            {
-                ret = (balls_inside_bucket == configs.level_number) && non_scoring_balls_on_screen == 0;
+                finished = false;
+                break;
             }
         }
     }
+    else finished = false;
 
-    return ret;
+    return finished;
 }
 
 bool Level::won(void)
