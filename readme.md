@@ -1,10 +1,12 @@
-# Projeto Tornado
-Bora irmãos.
+# In the bucket
 
-Comandos atualmente:
-* `make game`: Builda o jogo.
-* `make run`: Builda e roda o jogo.
-* `make tests`: Builda e roda os testes unitários (por enquanto só o exemplo deles).
-* `make clean`: Remove tudo que foi buildado.
+A simple game developed in C++ using [raylib](https://www.raylib.com/). Created to improve my understanding of the language and explore physics-based mechanics in game development. I'm sure that this code itself could be better, but it could also be unfinished, so I'm fine with that!
 
-#### Demo via let's go
+### Main menu
+![Main Menu](add_image_here)
+
+### Gameplay
+![Gameplay GIF](add_gif_here)
+
+## Running it
+Simply download and run the `game.exe` file under releases, or follow the steps on [this raylib template repo](https://github.com/PedroDalMoro/raylib_cpp_makefile_template) to build it locally.
