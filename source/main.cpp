@@ -37,7 +37,7 @@ int main()
     user_input_t user_input = {5.0f, 5.0f};
     level_configs_t level_configs;
 
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TornadoBol");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "in_the_bucket");
 
     while (!WindowShouldClose())
     {
