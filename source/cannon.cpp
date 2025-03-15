@@ -26,8 +26,8 @@ Ball Cannon::generate_random_ball(void)
 
     Ball ball(cannon_configs->pos.x, 
               cannon_configs->pos.y, 
-              cannon_configs->direction.x + (4.0f * RNG::getNormalized()) - 2.0f,       // -2 to 2 variation 
-              cannon_configs->direction.y + (4.0f * RNG::getNormalized()) - 2.0f, 
+              cannon_configs->direction.x + (12.0f * RNG::getNormalized()) - 6.0f,       // -6 to 6 variation 
+              cannon_configs->direction.y + (12.0f * RNG::getNormalized()) - 6.0f, 
               radius, 
               PI * radius * radius,
               cannon_configs->color,
